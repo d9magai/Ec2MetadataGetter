@@ -32,7 +32,7 @@ class Ec2MetadataProvider
 	
 	public static function Factory()
 	{
-		if (!self::instance)
+		if (!self::$instance)
 		{
 			self::$instance = new self;
 		}
