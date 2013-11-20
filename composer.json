@@ -1,4 +1,5 @@
 {
+	"name": "guiwoda/php-ec2-metadata",
 	"require": {
 		"php": ">=5.3.0",
 		"ext-curl": "*"
