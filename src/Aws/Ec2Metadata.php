@@ -3,6 +3,31 @@ namespace Aws;
 
 class Ec2Metadata
 {
+	private $path = '/latest/meta-data/';
+    private $url = 'http://169.254.169.254';
+    
+    private $commands = array(
+		'AmiId' => 'ami-id',
+		'AmiLaunchIndex' => 'ami-launch-index',
+		'AmiManifestPath' => 'ami-manifest-path',
+		'AncestorAmiIds' => 'ancestor-ami-ids',
+		'BlockDeviceMapping' => 'block-device-mapping',
+		'InstanceId' => 'instance-id',
+		'InstanceType' => 'instance-type',
+		'LocalHostname' => 'local-hostname',
+		'LocalIpv4' => 'local-ipv4',
+		'KernelId' => 'kernel-id',
+		'AvailabilityZone' => 'availability-zone',
+		'ProductCodes' => 'product-codes',
+		'PublicHostname' => 'public-hostname',
+		'PublicIpv4' => 'public-ipv4',
+		'PublicKeys' => 'public-keys',
+		'RamdiskId' => 'ramdisk-id',
+		'ReservationId' => 'reservation-id',
+		'SecurityGroups' => 'security-groups',
+		'UserData' => 'user-data'
+    );
+	
 	public function getBlockDeviceMapping()
 	{
 		$maps = $this->get('block-device-mapping');
