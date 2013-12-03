@@ -1,5 +1,6 @@
 {
 	"name": "guiwoda/php-ec2-metadata",
+	"description": "This tool is a rewrite of the EC2 Instance Metadata API for PHP.",
 	"require": {
 		"php": ">=5.3.0"
 	},
