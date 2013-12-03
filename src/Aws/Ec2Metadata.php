@@ -3,37 +3,15 @@ namespace Aws;
 
 class Ec2Metadata
 {
-	private $provider;
-	
-	public function __construct(Ec2MetadataProvider $provider)
-	{
-		$this->provider = $provider;
-	}
-	
-	public function __call($fn, $args)
-	{
-		if (strpos($fn, 'get') !== 0) {
-			throw new \LogicException("Only get operations allowed.");
-		}
-		
-		// Remove 'get'
-		$req = substr($fn, 3);
-		
-		if ($this->provider->exists($req))
-		{
-			return $this->provider->get($req, $args);
-		}
-	}
-	
 	public function getBlockDeviceMapping()
 	{
-		$maps = $this->provider->get('block-device-mapping');
+		$maps = $this->get('block-device-mapping');
 		
 		$output = array();
 		
 		foreach (explode(PHP_EOL, $maps) as $map)
 		{
-			$output[$map] = $this->provider->get('block-device-mapping', array($map));
+			$output[$map] = $this->get('block-device-mapping', array($map));
 		}
 		
 		return $output;
@@ -41,7 +19,7 @@ class Ec2Metadata
 	
 	public function getPublicKeys()
 	{
-		$rawKeys = $this->provider->get('public-keys');
+		$rawKeys = $this->get('public-keys');
 
 		$keys = array();
 		foreach (explode(PHP_EOL, $rawKeys) as $rawKey)
@@ -50,13 +28,13 @@ class Ec2Metadata
 			$index = $parts[0];
 			$keyname = $parts[1];
 			
-			$format = $this->provider->get('public-keys', array($index));
+			$format = $this->get('public-keys', array($index));
 			
 			$key = array(
 				'keyname' => $keyname,
 				'index' => $index,
 				'format' => $format,
-				'key' => $this->provider->get('public-keys', array($index, $format))
+				'key' => $this->get('public-keys', array($index, $format))
 			);
 			
 			$keys[] = $key;
@@ -70,21 +48,72 @@ class Ec2Metadata
 	{
 		$output = array();
 		
-		foreach ($this->provider->getCommands() as $req => $apiArg)
+		foreach ($this->getCommands() as $req => $apiArg)
 		{
-			switch ($req)
-			{
-				case 'PublicKeys':
-					$output[$req] = $this->getPublicKeys();
-					break;
-				case 'BlockDeviceMapping':
-					$output[$req] = $this->getBlockDeviceMapping();
-					break;
-				default:
-					$output[$fn] = $this->provider->get($req);
-			}
+			$output[$req] = $this->{"get$req"}();
 		}
 		
 		return $output;
+	}
+	
+	public function chkConfig()
+	{
+		if (!@get_headers($this->url)) {
+			throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.");
+		}
+	
+		return true;
+	}
+	
+	public function get($req, $args)
+	{
+		$command = $this->commands[$req];
+		$args = implode('/', $args);
+	
+		if ($args)
+		{
+			$args = "/$args";
+		}
+	
+		return file_get_contents($this->getFullPath() . $command . $args);
+	}
+	
+	/**
+	 * UserData is not inside '/meta-data', so we need to declare it explicitly
+	 * @return string
+	 */
+	public function getUserData()
+	{
+		return file_get_contents($this->url . $this->commands['UserData']);
+	}
+	
+	public function exists($req)
+	{
+		return array_key_exists($req, $this->commands);
+	}
+	
+	public function getCommands()
+	{
+		return $this->commands;
+	}
+	
+	private function getFullPath()
+	{
+		return $this->url . $this->path;
+	}
+	
+	public function __call($fn, $args)
+	{
+		if (strpos($fn, 'get') !== 0) {
+			throw new \LogicException("Only get operations allowed.");
+		}
+	
+		// Remove 'get'
+		$req = substr($fn, 3);
+	
+		if ($this->exists($req))
+		{
+			return $this->get($req, $args);
+		}
 	}
 }
