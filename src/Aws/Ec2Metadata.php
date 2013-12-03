@@ -109,7 +109,7 @@ class Ec2Metadata
 	 */
 	public function getUserData()
 	{
-		return file_get_contents($this->url . $this->commands['UserData']);
+		return file_get_contents($this->url . '/latest/' . $this->commands['UserData']);
 	}
 	
 	public function exists($req)
