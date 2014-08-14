@@ -9,7 +9,7 @@ class Ec2Metadata
 
     protected $hostname = '169.254.169.254';
 
-    protected $path = '/latest/meta-data/';
+    protected $path = 'latest/meta-data';
 
     protected $commands = [
             'AmiId' => 'ami-id',
@@ -141,7 +141,7 @@ class Ec2Metadata
     private function getFullPath()
     {
 
-        return sprintf("%s://%s%s", $this->protocol, $this->hostname, $this->path);
+        return sprintf("%s://%s/%s/", $this->protocol, $this->hostname, $this->path);
     }
 
     public function __call($fn, $args)
