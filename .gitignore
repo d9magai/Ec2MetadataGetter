@@ -1,5 +1,13 @@
-vendor
-.settings
-.buildpath
-composer.lock
-.project
+
+# for Eclipse
+/.buildpath
+/.project
+/.settings
+
+# for Composer
+/vendor
+/composer.lock
+
+# code coverage report
+/src/report
+
