@@ -6,6 +6,8 @@ This tool is a rewrite of the [EC2 Instance Metadata API](http://aws.amazon.com/
 Usage:
 
 in composer.json
-`"require": {
-	"guiwoda/php-ec2-metadata": "dev-master"
-}`
+```json
+"require": {
+	"d9magai/php-ec2-metadata": "dev-master"
+}
+```
