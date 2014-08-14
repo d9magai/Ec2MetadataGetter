@@ -5,11 +5,11 @@ namespace Aws;
 class Ec2Metadata
 {
 
-    private $path = '/latest/meta-data/';
+    protected $path = '/latest/meta-data/';
 
-    private $url = 'http://169.254.169.254';
+    protected $url = 'http://169.254.169.254';
 
-    private $commands = [
+    protected $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
             'AmiManifestPath' => 'ami-manifest-path',
