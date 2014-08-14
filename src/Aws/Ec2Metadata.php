@@ -9,7 +9,7 @@ class Ec2Metadata
 
     private $url = 'http://169.254.169.254';
 
-    private $commands = array(
+    private $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
             'AmiManifestPath' => 'ami-manifest-path',
@@ -29,19 +29,19 @@ class Ec2Metadata
             'ReservationId' => 'reservation-id',
             'SecurityGroups' => 'security-groups',
             'UserData' => 'user-data'
-    );
+    ];
 
     public function getBlockDeviceMapping()
     {
 
         $maps = $this->get('block-device-mapping');
 
-        $output = array();
+        $output = [];
 
         foreach (explode(PHP_EOL, $maps) as $map) {
-            $output[$map] = $this->get('block-device-mapping', array(
+            $output[$map] = $this->get('block-device-mapping', [
                     $map
-            ));
+            ]);
         }
 
         return $output;
@@ -52,25 +52,25 @@ class Ec2Metadata
 
         $rawKeys = $this->get('public-keys');
 
-        $keys = array();
+        $keys = [];
         foreach (explode(PHP_EOL, $rawKeys) as $rawKey) {
             $parts = explode('=', $rawKey);
             $index = $parts[0];
             $keyname = $parts[1];
 
-            $format = $this->get('public-keys', array(
+            $format = $this->get('public-keys', [
                     $index
-            ));
+            ]);
 
-            $key = array(
+            $key = [
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
-                    'key' => $this->get('public-keys', array(
+                    'key' => $this->get('public-keys', [
                             $index,
                             $format
-                    ))
-            );
+                    ])
+            ];
 
             $keys[] = $key;
         }
@@ -81,7 +81,7 @@ class Ec2Metadata
     public function getAll()
     {
 
-        $output = array();
+        $output = [];
 
         foreach ($this->getCommands() as $req => $apiArg) {
             $output[$req] = $this->{"get$req"}();
