@@ -108,18 +108,13 @@ class Ec2Metadata
         return sprintf("%s://%s/%s", $this->protocol, $this->hostname, $this->path);
     }
 
-    public function __call($fn, $args)
+    public function __call($functionName, $args)
     {
 
-        if (strpos($fn, 'get') !== 0) {
+        $command = preg_replace('/^get/', '', $functionName);
+        if (! $this->exists($command)) {
             throw new \LogicException("Only get operations allowed.");
         }
-
-        // Remove 'get'
-        $req = substr($fn, 3);
-
-        if ($this->exists($req)) {
-            return $this->get($req, array_pop($args));
-        }
+        return $this->get($command, array_pop($args));
     }
 }
