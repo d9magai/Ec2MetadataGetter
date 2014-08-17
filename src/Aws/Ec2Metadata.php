@@ -5,11 +5,13 @@ namespace Aws;
 class Ec2Metadata
 {
 
-    private $path = '/latest/meta-data/';
+    protected $protocol = 'http';
 
-    private $url = 'http://169.254.169.254';
+    protected $hostname = '169.254.169.254';
 
-    private $commands = [
+    protected $path = 'latest/meta-data';
+
+    protected $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
             'AmiManifestPath' => 'ami-manifest-path',
@@ -139,7 +141,7 @@ class Ec2Metadata
     private function getFullPath()
     {
 
-        return $this->url . $this->path;
+        return sprintf("%s://%s/%s/", $this->protocol, $this->hostname, $this->path);
     }
 
     public function __call($fn, $args)
