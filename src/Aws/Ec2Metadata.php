@@ -52,7 +52,7 @@ class Ec2Metadata
     public function getPublicKeys()
     {
 
-        $rawKeys = $this->get('public-keys');
+        $rawKeys = $this->get('PublicKeys');
 
         $keys = [];
         foreach (explode(PHP_EOL, $rawKeys) as $rawKey) {
@@ -60,7 +60,7 @@ class Ec2Metadata
             $index = $parts[0];
             $keyname = $parts[1];
 
-            $format = $this->get('public-keys', [
+            $format = $this->get('PublicKeys', [
                     $index
             ]);
 
@@ -68,7 +68,7 @@ class Ec2Metadata
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
-                    'key' => $this->get('public-keys', [
+                    'key' => $this->get('PublicKeys', [
                             $index,
                             $format
                     ])
