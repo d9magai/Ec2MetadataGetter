@@ -36,14 +36,9 @@ class Ec2Metadata
     public function getBlockDeviceMapping()
     {
 
-        $maps = $this->get('block-device-mapping');
-
         $output = [];
-
-        foreach (explode(PHP_EOL, $maps) as $map) {
-            $output[$map] = $this->get('block-device-mapping', [
-                    $map
-            ]);
+        foreach (explode(PHP_EOL, $this->get('BlockDeviceMapping')) as $map) {
+            $output[$map] = $this->get('BlockDeviceMapping', $map);
         }
 
         return $output;
@@ -52,7 +47,7 @@ class Ec2Metadata
     public function getPublicKeys()
     {
 
-        $rawKeys = $this->get('public-keys');
+        $rawKeys = $this->get('PublicKeys');
 
         $keys = [];
         foreach (explode(PHP_EOL, $rawKeys) as $rawKey) {
@@ -60,18 +55,13 @@ class Ec2Metadata
             $index = $parts[0];
             $keyname = $parts[1];
 
-            $format = $this->get('public-keys', [
-                    $index
-            ]);
+            $format = $this->get('PublicKeys', $index);
 
             $key = [
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
-                    'key' => $this->get('public-keys', [
-                            $index,
-                            $format
-                    ])
+                    'key' => $this->get('PublicKeys', $index . '/' . $format)
             ];
 
             $keys[] = $key;
@@ -84,7 +74,6 @@ class Ec2Metadata
     {
 
         $output = [];
-
         foreach ($this->getCommands() as $req => $apiArg) {
             $output[$req] = $this->{"get$req"}();
         }
@@ -102,17 +91,11 @@ class Ec2Metadata
         return true;
     }
 
-    public function get($req, $args)
+    public function get($req, $args = '')
     {
 
         $command = $this->commands[$req];
-        $args = implode('/', $args);
-
-        if ($args) {
-            $args = "/$args";
-        }
-
-        return file_get_contents($this->getFullPath() . $command . $args);
+        return file_get_contents($this->getFullPath() . $command . '/' . $args);
     }
 
     /**
@@ -155,7 +138,7 @@ class Ec2Metadata
         $req = substr($fn, 3);
 
         if ($this->exists($req)) {
-            return $this->get($req, $args);
+            return $this->get($req, array_pop($args));
         }
     }
 }
