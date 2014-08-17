@@ -144,7 +144,7 @@ class Ec2Metadata
         $req = substr($fn, 3);
 
         if ($this->exists($req)) {
-            return $this->get($req, $args);
+            return $this->get($req, array_pop($args));
         }
     }
 }
