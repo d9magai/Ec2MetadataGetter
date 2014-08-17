@@ -77,7 +77,7 @@ class Ec2Metadata
     public function chkConfig()
     {
 
-        if (! @get_headers($this->url)) {
+        if (!@get_headers($this->url)) {
             throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.");
         }
 
@@ -113,7 +113,7 @@ class Ec2Metadata
     {
 
         $command = preg_replace('/^get/', '', $functionName);
-        if (! $this->exists($command)) {
+        if (!$this->exists($command)) {
             throw new \LogicException("Only get operations allowed.");
         }
         return $this->get($command, array_pop($args));
