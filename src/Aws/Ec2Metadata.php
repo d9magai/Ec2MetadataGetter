@@ -47,24 +47,17 @@ class Ec2Metadata
     public function getPublicKeys()
     {
 
-        $rawKeys = $this->get('PublicKeys');
-
         $keys = [];
-        foreach (explode(PHP_EOL, $rawKeys) as $rawKey) {
-            $parts = explode('=', $rawKey);
-            $index = $parts[0];
-            $keyname = $parts[1];
-
+        foreach (explode(PHP_EOL, $this->get('PublicKeys')) as $publicKey) {
+            list($index, $keyname) = explode('=', $publicKey, 2);
             $format = $this->get('PublicKeys', $index);
 
-            $key = [
+            $keys[] = [
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
                     'key' => $this->get('PublicKeys', sprintf("%s/%s", $index, $format))
             ];
-
-            $keys[] = $key;
         }
 
         return $keys;
