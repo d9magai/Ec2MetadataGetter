@@ -88,7 +88,7 @@ class Ec2Metadata
     {
 
         $command = $this->commands[$req];
-        return file_get_contents(sprintf("%s%s/%s", $this->getFullPath(), $command, $args));
+        return file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $command, $args));
     }
 
     /**
@@ -117,7 +117,7 @@ class Ec2Metadata
     private function getFullPath()
     {
 
-        return sprintf("%s://%s/%s/", $this->protocol, $this->hostname, $this->path);
+        return sprintf("%s://%s/%s", $this->protocol, $this->hostname, $this->path);
     }
 
     public function __call($fn, $args)
