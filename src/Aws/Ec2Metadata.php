@@ -61,7 +61,7 @@ class Ec2Metadata
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
-                    'key' => $this->get('PublicKeys', $index . '/' . $format)
+                    'key' => $this->get('PublicKeys', sprintf("%s/%s", $index, $format))
             ];
 
             $keys[] = $key;
@@ -95,7 +95,7 @@ class Ec2Metadata
     {
 
         $command = $this->commands[$req];
-        return file_get_contents($this->getFullPath() . $command . '/' . $args);
+        return file_get_contents(sprintf("%s%s/%s", $this->getFullPath(), $command, $args));
     }
 
     /**
