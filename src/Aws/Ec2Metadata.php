@@ -60,18 +60,13 @@ class Ec2Metadata
             $index = $parts[0];
             $keyname = $parts[1];
 
-            $format = $this->get('PublicKeys', [
-                    $index
-            ]);
+            $format = $this->get('PublicKeys', $index);
 
             $key = [
                     'keyname' => $keyname,
                     'index' => $index,
                     'format' => $format,
-                    'key' => $this->get('PublicKeys', [
-                            $index,
-                            $format
-                    ])
+                    'key' => $this->get('PublicKeys', $index . '/' . $format)
             ];
 
             $keys[] = $key;
@@ -102,17 +97,11 @@ class Ec2Metadata
         return true;
     }
 
-    public function get($req, $args)
+    public function get($req, $args = '')
     {
 
         $command = $this->commands[$req];
-        $args = implode('/', $args);
-
-        if ($args) {
-            $args = "/$args";
-        }
-
-        return file_get_contents($this->getFullPath() . $command . $args);
+        return file_get_contents($this->getFullPath() . $command . '/' . $args);
     }
 
     /**
