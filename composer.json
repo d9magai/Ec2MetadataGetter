@@ -2,7 +2,7 @@
    "name":"d9magai/php-ec2-metadata",
    "description":"This tool is a rewrite of the EC2 Instance Metadata API for PHP.",
    "require":{
-      "php":">=5.3.0"
+      "php":">=5.4.0"
    },
    "license":"MIT",
    "require-dev":{
