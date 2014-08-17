@@ -93,8 +93,8 @@ class Ec2Metadata
     public function get($req, $args = '')
     {
 
-        $command = $this->commands[$req];
-        return file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $command, $args));
+        $response = @file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $this->commands[$req], $args));
+        return $response === false ? 'not available' : $response;
     }
 
     /**
