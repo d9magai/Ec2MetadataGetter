@@ -40,7 +40,6 @@ class Ec2Metadata
         foreach (explode(PHP_EOL, $this->get('BlockDeviceMapping')) as $map) {
             $output[$map] = $this->get('BlockDeviceMapping', $map);
         }
-
         return $output;
     }
 
