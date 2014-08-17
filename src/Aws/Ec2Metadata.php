@@ -22,7 +22,7 @@ class Ec2Metadata
             'LocalHostname' => 'local-hostname',
             'LocalIpv4' => 'local-ipv4',
             'KernelId' => 'kernel-id',
-            'AvailabilityZone' => 'availability-zone',
+            'Placement' => 'placement/availability-zone',
             'ProductCodes' => 'product-codes',
             'PublicHostname' => 'public-hostname',
             'PublicIpv4' => 'public-ipv4',
