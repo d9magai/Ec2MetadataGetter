@@ -36,16 +36,10 @@ class Ec2Metadata
     public function getBlockDeviceMapping()
     {
 
-        $maps = $this->get('block-device-mapping');
-
         $output = [];
-
-        foreach (explode(PHP_EOL, $maps) as $map) {
-            $output[$map] = $this->get('block-device-mapping', [
-                    $map
-            ]);
+        foreach (explode(PHP_EOL, $this->get('BlockDeviceMapping')) as $map) {
+            $output[$map] = $this->get('BlockDeviceMapping', $map);
         }
-
         return $output;
     }
 
