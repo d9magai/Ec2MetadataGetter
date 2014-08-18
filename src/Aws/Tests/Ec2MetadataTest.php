@@ -5,7 +5,7 @@ namespace Aws\Tests;
 class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
 {
 
-    private $metadata = [
+    private $dummyMetadata = [
             'ami-id' => 'ami-12345678',
             'ami-launch-index' => '0',
             'ami-manifest-path' => '(unknown)',
@@ -43,7 +43,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
 
-        $this->ec2metadata = new \Aws\Mock\VirtualEc2Metadata($this->metadata);
+        $this->ec2metadata = new \Aws\Mock\VirtualEc2Metadata($this->dummyMetadata);
     }
 
     /**
