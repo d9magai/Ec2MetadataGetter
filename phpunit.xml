@@ -5,6 +5,7 @@
     <filter>
         <blacklist>
             <directory>vendor</directory>
+            <directory>src/Aws/Mock</directory>
             <file>classloader.php</file>
         </blacklist>
     </filter>
