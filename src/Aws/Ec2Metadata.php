@@ -11,7 +11,7 @@ class Ec2Metadata
 
     protected $path = 'latest/meta-data';
 
-    protected $commands = [
+    private $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
             'AmiManifestPath' => 'ami-manifest-path',
