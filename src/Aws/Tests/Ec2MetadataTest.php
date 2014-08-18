@@ -23,6 +23,14 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
             'public-ipv4' => '12.34.56.78',
+            'public-keys' => [
+                    [
+                            'keyname' => 'my-public-key',
+                            'index' => '0',
+                            'format' => 'openssh-key',
+                            'key' => 'ssh-rsa hogefuga my-public-key'
+                    ]
+            ],
             'reservation-id' => 'r-1234abcd',
             'security-groups' => 'securitygroups'
     ];
