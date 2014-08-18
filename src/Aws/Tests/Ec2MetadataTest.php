@@ -23,6 +23,17 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'local-ipv4' => '10.123.123.123',
             'mac' => '11:22:33:44:55:66',
             'metrics/vhostmd' => '<?xml version="1.0" encoding="UTF-8"?>',
+            'network/interfaces/macs' => [
+                    '11:22:33:44:55:66' => [
+                            'device-number' => '0',
+                            'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
+                            'local-ipv4s' => '10.123.123.123',
+                            'mac' => '11:22:33:44:55:66',
+                            'owner-id' => '123456789012',
+                            'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
+                            'public-ipv4s' => '12.34.56.78'
+                    ]
+            ],
             'placement' => 'ap-northeast-1c',
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',

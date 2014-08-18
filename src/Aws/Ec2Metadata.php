@@ -26,6 +26,7 @@ class Ec2Metadata
             'LocalIpv4' => 'local-ipv4',
             'Mac' => 'mac',
             'Metrics' => 'metrics/vhostmd',
+            'Network' => 'network/interfaces/macs',
             'Placement' => 'placement/availability-zone',
             'ProductCodes' => 'product-codes',
             'PublicHostname' => 'public-hostname',
