@@ -24,6 +24,7 @@ class Ec2Metadata
             'KernelId' => 'kernel-id',
             'LocalHostname' => 'local-hostname',
             'LocalIpv4' => 'local-ipv4',
+            'Mac' => 'mac',
             'Placement' => 'placement/availability-zone',
             'ProductCodes' => 'product-codes',
             'PublicHostname' => 'public-hostname',
