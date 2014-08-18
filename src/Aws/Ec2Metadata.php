@@ -18,6 +18,7 @@ class Ec2Metadata
             'AncestorAmiIds' => 'ancestor-ami-ids',
             'BlockDeviceMapping' => 'block-device-mapping',
             'Hostname' => 'hostname',
+            'InstanceAction' => 'instance-action',
             'InstanceId' => 'instance-id',
             'InstanceType' => 'instance-type',
             'LocalHostname' => 'local-hostname',

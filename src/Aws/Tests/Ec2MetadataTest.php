@@ -15,6 +15,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                     'root' => '/dev/sda1'
             ],
             'hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
+            'instance-action' => 'none',
             'instance-id' => 'i-87654321',
             'instance-type' => 't1.micro',
             'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
@@ -107,6 +108,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
+    }
+
+    /**
+     * @test
+     */
+    public function getInstanceActionTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getInstanceAction(), 'none');
     }
 
     /**
