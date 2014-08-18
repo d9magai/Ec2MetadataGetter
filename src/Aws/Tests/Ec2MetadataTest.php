@@ -18,9 +18,9 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'instance-action' => 'none',
             'instance-id' => 'i-87654321',
             'instance-type' => 't1.micro',
+            'kernel-id' => 'aki-12345678',
             'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
             'local-ipv4' => '10.123.123.123',
-            'kernel-id' => 'aki-12345678',
             'placement' => 'ap-northeast-1c',
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
@@ -140,6 +140,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getKernelIdTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getKernelId(), 'aki-12345678');
+    }
+
+    /**
+     * @test
+     */
     public function getLocalHostnameTest()
     {
 
@@ -153,15 +162,6 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getLocalIpv4(), '10.123.123.123');
-    }
-
-    /**
-     * @test
-     */
-    public function getKernelIdTest()
-    {
-
-        $this->assertEquals($this->ec2metadata->getKernelId(), 'aki-12345678');
     }
 
     /**
