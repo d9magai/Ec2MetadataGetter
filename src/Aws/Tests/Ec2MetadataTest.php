@@ -31,6 +31,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                             'key' => 'ssh-rsa hogefuga my-public-key'
                     ]
             ],
+            'ramdisk-id' => 'ari-abcdefgh',
             'reservation-id' => 'r-1234abcd',
             'security-groups' => 'securitygroups',
             'user-data' => 'this is userdata'
@@ -175,7 +176,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     public function getRamdiskIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getRamdiskId(), 'not available');
+        $this->assertEquals($this->ec2metadata->getRamdiskId(), 'ari-abcdefgh');
     }
 
     /**
