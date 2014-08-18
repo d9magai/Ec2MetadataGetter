@@ -30,6 +30,12 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                             'index' => '0',
                             'format' => 'openssh-key',
                             'key' => 'ssh-rsa hogefuga my-public-key'
+                    ],
+                    [
+                            'keyname' => 'hoge-key',
+                            'index' => '1',
+                            'format' => 'openssh-key',
+                            'key' => 'ssh-rsa hogefugahogefuga hoge-key'
                     ]
             ],
             'ramdisk-id' => 'ari-abcdefgh',
@@ -182,11 +188,17 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $publicKeys = $this->ec2metadata->getPublicKeys();
-        $publicKey = array_pop($publicKeys);
+        $publicKey = $publicKeys[0];
         $this->assertEquals($publicKey['keyname'], 'my-public-key');
         $this->assertEquals($publicKey['index'], '0');
         $this->assertEquals($publicKey['format'], 'openssh-key');
         $this->assertEquals($publicKey['key'], 'ssh-rsa hogefuga my-public-key');
+
+        $publicKey = $publicKeys[1];
+        $this->assertEquals($publicKey['keyname'], 'hoge-key');
+        $this->assertEquals($publicKey['index'], '1');
+        $this->assertEquals($publicKey['format'], 'openssh-key');
+        $this->assertEquals($publicKey['key'], 'ssh-rsa hogefugahogefuga hoge-key');
     }
 
     /**
