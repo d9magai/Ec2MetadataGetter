@@ -49,6 +49,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getAmiIdTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getAmiId(), 'ami-12345678');
+    }
+
+    /**
+     * @test
+     */
     public function getAmiLaunchIndexTest()
     {
 
