@@ -38,4 +38,5 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
             $vfsRoot->addChild($file);
         }
     }
+
 }
