@@ -67,6 +67,17 @@ class Ec2Metadata
         return $keys;
     }
 
+    public function getNetwork()
+    {
+        $mac = $this->get('Network');
+        $interfaces = [];
+        foreach (explode(PHP_EOL, $this->get('Network', $mac)) as $key) {
+            $interfaces[$key] = $this->get('Network', sprintf("%s/%s", $mac, $key));
+        }
+
+        return $interfaces;
+    }
+
     public function getAll()
     {
 

@@ -198,6 +198,22 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getNetworkTest()
+    {
+
+        $interfaces = $this->ec2metadata->getNetwork();
+        $this->assertEquals($interfaces['device-number'], '0');
+        $this->assertEquals($interfaces['local-hostname'], 'ip-10-123-123-123.ap-northeast-1.compute.internal');
+        $this->assertEquals($interfaces['local-ipv4s'], '10.123.123.123');
+        $this->assertEquals($interfaces['mac'], '11:22:33:44:55:66');
+        $this->assertEquals($interfaces['owner-id'], '123456789012');
+        $this->assertEquals($interfaces['public-hostname'], 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com');
+        $this->assertEquals($interfaces['public-ipv4s'], '12.34.56.78');
+    }
+
+    /**
+     * @test
+     */
     public function getPlacementTest()
     {
 
