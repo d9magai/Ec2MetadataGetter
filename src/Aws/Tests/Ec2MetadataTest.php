@@ -22,6 +22,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
             'local-ipv4' => '10.123.123.123',
             'mac' => '11:22:33:44:55:66',
+            'metrics/vhostmd' => '<?xml version="1.0" encoding="UTF-8"?>',
             'placement' => 'ap-northeast-1c',
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
@@ -172,6 +173,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getMac(), '11:22:33:44:55:66');
+    }
+
+    /**
+     * @test
+     */
+    public function getMetricsTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getMetrics(), '<?xml version="1.0" encoding="UTF-8"?>');
     }
 
     /**
