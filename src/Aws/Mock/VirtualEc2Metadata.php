@@ -32,6 +32,27 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
             unset($metadata['block-device-mapping']);
         }
 
+        if (array_key_exists('public-keys', $metadata)) {
+
+            $publicKeysPath = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys", $this->path));
+            $publicKeysList = [];
+            foreach ($metadata['public-keys'] as $publicKey) {
+                $publicKeysList[] = sprintf("%s=%s", $publicKey['index'], $publicKey['keyname']);
+
+                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->path, $publicKey['index']));
+                $file->write($publicKey['format']);
+                $vfsRoot->addChild($file);
+
+                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->path, $publicKey['index'], $publicKey['format']));
+                $file->write($publicKey['key']);
+                $vfsRoot->addChild($file);
+            }
+            $publicKeysPath->write(implode(PHP_EOL, $publicKeysList));
+            $vfsRoot->addChild($publicKeysPath);
+
+            unset($metadata['public-keys']);
+        }
+
         foreach ($metadata as $key => $val) {
             $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $this->path, $key));
             $file->write($val);

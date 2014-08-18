@@ -157,6 +157,20 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getPublicKeysTest()
+    {
+
+        $publicKeys = $this->ec2metadata->getPublicKeys();
+        $publicKey = array_pop($publicKeys);
+        $this->assertEquals($publicKey['keyname'], 'my-public-key');
+        $this->assertEquals($publicKey['index'], '0');
+        $this->assertEquals($publicKey['format'], 'openssh-key');
+        $this->assertEquals($publicKey['key'], 'ssh-rsa hogefuga my-public-key');
+    }
+
+    /**
+     * @test
+     */
     public function getRamdiskIdTest()
     {
 
