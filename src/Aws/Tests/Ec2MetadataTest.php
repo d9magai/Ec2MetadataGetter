@@ -32,7 +32,8 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                     ]
             ],
             'reservation-id' => 'r-1234abcd',
-            'security-groups' => 'securitygroups'
+            'security-groups' => 'securitygroups',
+            'user-data' => 'this is userdata'
     ];
 
     private $ec2metadata;
@@ -193,6 +194,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getSecurityGroups(), 'securitygroups');
+    }
+
+    /**
+     * @test
+     */
+    public function getUserDataTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getUserData(), 'this is userdata');
     }
 
 }
