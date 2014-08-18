@@ -9,6 +9,11 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'ami-id' => 'ami-12345678',
             'ami-launch-index' => '0',
             'ami-manifest-path' => '(unknown)',
+            'block-device-mapping' => [
+                    'ebs0' => 'sda',
+                    'ephemeral0' => 'sdb',
+                    'root' => '/dev/sda1'
+            ],
             'instance-id' => 'i-87654321',
             'instance-type' => 't1.micro',
             'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
@@ -55,6 +60,18 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getAncestorAmiIds(), 'not available');
+    }
+
+    /**
+     * @test
+     */
+    public function getBlockDeviceMappingTest()
+    {
+
+        $blockDviceMapping = $this->ec2metadata->getBlockDeviceMapping();
+        $this->assertEquals($blockDviceMapping['ebs0'], 'sda');
+        $this->assertEquals($blockDviceMapping['ephemeral0'], 'sdb');
+        $this->assertEquals($blockDviceMapping['root'], '/dev/sda1');
     }
 
     /**
