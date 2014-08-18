@@ -14,6 +14,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                     'ephemeral0' => 'sdb',
                     'root' => '/dev/sda1'
             ],
+            'hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
             'instance-id' => 'i-87654321',
             'instance-type' => 't1.micro',
             'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
@@ -82,6 +83,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($blockDviceMapping['ebs0'], 'sda');
         $this->assertEquals($blockDviceMapping['ephemeral0'], 'sdb');
         $this->assertEquals($blockDviceMapping['root'], '/dev/sda1');
+    }
+
+    /**
+     * @test
+     */
+    public function getHostnameTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
     }
 
     /**

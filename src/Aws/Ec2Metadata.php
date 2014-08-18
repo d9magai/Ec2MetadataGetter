@@ -17,6 +17,7 @@ class Ec2Metadata
             'AmiManifestPath' => 'ami-manifest-path',
             'AncestorAmiIds' => 'ancestor-ami-ids',
             'BlockDeviceMapping' => 'block-device-mapping',
+            'Hostname' => 'hostname',
             'InstanceId' => 'instance-id',
             'InstanceType' => 'instance-type',
             'LocalHostname' => 'local-hostname',
