@@ -13,11 +13,6 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         $vfsRoot = \org\bovigo\vfs\vfsStream::setup($this->hostname);
         $vfsRoot->addChild(\org\bovigo\vfs\vfsStream::newDirectory($this->path));
 
-        if (array_key_exists('placement', $metadata)) {
-            $metadata['placement/availability-zone'] = $metadata['placement'];
-            unset($metadata['placement']);
-        }
-
         if (array_key_exists('block-device-mapping', $metadata)) {
 
             $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping", $this->path));

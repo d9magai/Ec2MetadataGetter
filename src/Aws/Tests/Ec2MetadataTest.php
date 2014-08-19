@@ -34,7 +34,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
                             'public-ipv4s' => '12.34.56.78'
                     ]
             ],
-            'placement' => 'ap-northeast-1c',
+            'placement/availability-zone' => 'ap-northeast-1c',
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
             'profile' => 'default-paravirtual',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
