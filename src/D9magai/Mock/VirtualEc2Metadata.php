@@ -8,7 +8,7 @@ namespace D9magai\Mock;
  *
  * @author d9magai
  */
-class VirtualEc2Metadata extends \Aws\Ec2Metadata
+class VirtualEc2Metadata extends \D9magai\Ec2Metadata
 {
 
     /**
