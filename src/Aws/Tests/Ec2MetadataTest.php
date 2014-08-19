@@ -201,7 +201,8 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     public function getNetworkTest()
     {
 
-        $interfaces = $this->ec2metadata->getNetwork();
+        $network = $this->ec2metadata->getNetwork();
+        $interfaces = $network['11:22:33:44:55:66'];
         $this->assertEquals($interfaces['device-number'], '0');
         $this->assertEquals($interfaces['local-hostname'], 'ip-10-123-123-123.ap-northeast-1.compute.internal');
         $this->assertEquals($interfaces['local-ipv4s'], '10.123.123.123');

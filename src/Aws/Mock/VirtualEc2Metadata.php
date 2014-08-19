@@ -56,10 +56,9 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         if (array_key_exists('network/interfaces/macs', $metadata)) {
 
             $networkMacsPath = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/network/interfaces/macs", $this->path));
+            $networkMacsList = [];
             foreach ($metadata['network/interfaces/macs'] as $mac => $elements) {
-                $networkMacsPath->write($mac);
-                $vfsRoot->addChild($networkMacsPath);
-
+                $networkMacsList[] = $mac;
                 $networkMacAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->path, $mac);
                 $file = \org\bovigo\vfs\vfsStream::newFile($networkMacAddressPath);
                 $file->write(implode(PHP_EOL, array_keys($elements)));
@@ -71,6 +70,8 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
                     $vfsRoot->addChild($file);
                 }
             }
+            $networkMacsPath->write(implode(PHP_EOL, $networkMacsList));
+            $vfsRoot->addChild($networkMacsPath);
 
             unset($metadata['network/interfaces/macs']);
         }
