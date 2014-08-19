@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+  colors="true"
+  bootstrap="classloader.php">
+    <filter>
+        <blacklist>
+            <directory>vendor</directory>
+            <directory>src/Aws/Mock</directory>
+            <file>classloader.php</file>
+        </blacklist>
+    </filter>
+</phpunit>
+
