@@ -33,8 +33,14 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
             unset($metadata['network/interfaces/macs']);
         }
 
+        $this->writeArrayToVfs($metadata, $this->path);
+    }
+
+    private function writeArrayToVfs(array $metadata, $path)
+    {
+
         foreach ($metadata as $key => $val) {
-            $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $this->path, $key));
+            $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $path, $key));
             $file->write($val);
             $this->vfsRoot->addChild($file);
         }
