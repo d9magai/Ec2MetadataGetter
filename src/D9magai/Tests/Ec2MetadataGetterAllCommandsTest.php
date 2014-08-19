@@ -110,10 +110,10 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getBlockDeviceMappingTest()
     {
 
-        $blockDviceMapping = $this->ec2metadata->getBlockDeviceMapping();
-        $this->assertEquals($blockDviceMapping['ebs0'], 'sda');
-        $this->assertEquals($blockDviceMapping['ephemeral0'], 'sdb');
-        $this->assertEquals($blockDviceMapping['root'], '/dev/sda1');
+        $blockDeviceMapping = $this->ec2metadata->getBlockDeviceMapping();
+        $this->assertEquals($blockDeviceMapping['ebs0'], 'sda');
+        $this->assertEquals($blockDeviceMapping['ephemeral0'], 'sdb');
+        $this->assertEquals($blockDeviceMapping['root'], '/dev/sda1');
     }
 
     /**
