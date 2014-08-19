@@ -23,22 +23,7 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
         if (array_key_exists('public-keys', $metadata)) {
 
-            $publicKeysPath = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys", $this->path));
-            $publicKeysList = [];
-            foreach ($metadata['public-keys'] as $publicKey) {
-                $publicKeysList[] = sprintf("%s=%s", $publicKey['index'], $publicKey['keyname']);
-
-                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->path, $publicKey['index']));
-                $file->write($publicKey['format']);
-                $this->vfsRoot->addChild($file);
-
-                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->path, $publicKey['index'], $publicKey['format']));
-                $file->write($publicKey['key']);
-                $this->vfsRoot->addChild($file);
-            }
-            $publicKeysPath->write(implode(PHP_EOL, $publicKeysList));
-            $this->vfsRoot->addChild($publicKeysPath);
-
+            $this->writePublicKeysToVfs($metadata['public-keys']);
             unset($metadata['public-keys']);
         }
 
@@ -84,6 +69,26 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
             $file->write($val);
             $this->vfsRoot->addChild($file);
         }
+    }
+
+    private function writePublicKeysToVfs(array $publicKeys)
+    {
+
+        $publicKeysFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys", $this->path));
+        $publicKeysList = [];
+        foreach ($publicKeys as $publicKey) {
+            $publicKeysList[] = sprintf("%s=%s", $publicKey['index'], $publicKey['keyname']);
+
+            $indexFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->path, $publicKey['index']));
+            $indexFile->write($publicKey['format']);
+            $this->vfsRoot->addChild($indexFile);
+
+            $formatFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->path, $publicKey['index'], $publicKey['format']));
+            $formatFile->write($publicKey['key']);
+            $this->vfsRoot->addChild($formatFile);
+        }
+        $publicKeysFile->write(implode(PHP_EOL, $publicKeysList));
+        $this->vfsRoot->addChild($publicKeysFile);
     }
 
 }
