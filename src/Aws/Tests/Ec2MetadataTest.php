@@ -36,6 +36,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             ],
             'placement' => 'ap-northeast-1c',
             'product-codes' => 'abcdefghijklmnopqrstuvwxy',
+            'profile' => 'default-paravirtual',
             'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
             'public-ipv4' => '12.34.56.78',
             'public-keys' => [
@@ -228,6 +229,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getProductCodes(), 'abcdefghijklmnopqrstuvwxy');
+    }
+
+    /**
+     * @test
+     */
+    public function getProfileTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getProfile(), 'default-paravirtual');
     }
 
     /**

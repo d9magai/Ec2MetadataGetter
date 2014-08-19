@@ -29,6 +29,7 @@ class Ec2Metadata
             'Network' => 'network/interfaces/macs',
             'Placement' => 'placement/availability-zone',
             'ProductCodes' => 'product-codes',
+            'Profile' => 'profile',
             'PublicHostname' => 'public-hostname',
             'PublicIpv4' => 'public-ipv4',
             'PublicKeys' => 'public-keys',
