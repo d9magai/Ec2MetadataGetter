@@ -117,6 +117,18 @@ class Ec2MetadataGetter
         return $response === false ? 'not available' : $response;
     }
 
+    /**
+     * UserData is not inside '/meta-data', so we need to declare it explicitly
+     *
+     * @return string
+     */
+    public function getUserData()
+    {
+
+        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
+        return $response === false ? 'not available' : $response;
+    }
+
     public function exists($req)
     {
 
