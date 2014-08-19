@@ -5,7 +5,7 @@
     <filter>
         <blacklist>
             <directory>vendor</directory>
-            <directory>src/Aws/Mock</directory>
+            <directory>src/D9magai/Mock</directory>
             <file>classloader.php</file>
         </blacklist>
     </filter>
