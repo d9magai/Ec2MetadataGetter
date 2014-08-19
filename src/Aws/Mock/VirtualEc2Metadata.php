@@ -29,24 +29,7 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
         if (array_key_exists('network/interfaces/macs', $metadata)) {
 
-            $networkMacsPath = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/network/interfaces/macs", $this->path));
-            $networkMacsList = [];
-            foreach ($metadata['network/interfaces/macs'] as $mac => $elements) {
-                $networkMacsList[] = $mac;
-                $networkMacAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->path, $mac);
-                $file = \org\bovigo\vfs\vfsStream::newFile($networkMacAddressPath);
-                $file->write(implode(PHP_EOL, array_keys($elements)));
-                $this->vfsRoot->addChild($file);
-
-                foreach ($elements as $key => $val) {
-                    $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $networkMacAddressPath, $key));
-                    $file->write($val);
-                    $this->vfsRoot->addChild($file);
-                }
-            }
-            $networkMacsPath->write(implode(PHP_EOL, $networkMacsList));
-            $this->vfsRoot->addChild($networkMacsPath);
-
+            $this->writeNetworkToVfs($metadata['network/interfaces/macs']);
             unset($metadata['network/interfaces/macs']);
         }
 
@@ -89,6 +72,28 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         }
         $publicKeysFile->write(implode(PHP_EOL, $publicKeysList));
         $this->vfsRoot->addChild($publicKeysFile);
+    }
+
+    private function writeNetworkToVfs(array $network)
+    {
+
+        $macsFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/network/interfaces/macs", $this->path));
+        $macsList = [];
+        foreach ($network as $mac => $elements) {
+            $macsList[] = $mac;
+            $macAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->path, $mac);
+            $file = \org\bovigo\vfs\vfsStream::newFile($macAddressPath);
+            $file->write(implode(PHP_EOL, array_keys($elements)));
+            $this->vfsRoot->addChild($file);
+
+            foreach ($elements as $key => $val) {
+                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $macAddressPath, $key));
+                $file->write($val);
+                $this->vfsRoot->addChild($file);
+            }
+        }
+        $macsFile->write(implode(PHP_EOL, $macsList));
+        $this->vfsRoot->addChild($macsFile);
     }
 
 }
