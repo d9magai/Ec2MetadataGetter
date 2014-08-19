@@ -2,13 +2,34 @@
 
 namespace Aws\Mock;
 
+/**
+ * This class queries the EC2 instance Metadata from Virtual File System.
+ * Using for PHPUnit.
+ *
+ * @author d9magai
+ */
 class VirtualEc2Metadata extends \Aws\Ec2Metadata
 {
 
+    /**
+     * read from vfs protocol
+     *
+     * @var string
+     */
     protected $protocol = 'vfs';
 
+    /**
+     * vfsRoot is $this->hostname
+     *
+     * @var string
+     */
     private $vfsRoot;
 
+    /**
+     * write metadata to Virtual File System
+     *
+     * @param array $metadata
+     */
     public function __construct(array $metadata)
     {
 
@@ -36,6 +57,18 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         $this->writeArrayToVfs($metadata, $this->path);
     }
 
+    /**
+     * write array to Virtual File System
+     *
+     * e.g.
+     * $metadata = ['id' => '12345'];
+     * $path = vfs://169.254.169.254/latest/metadta;
+     *
+     * writing '12345' to vfs://169.254.169.254/latest/metadta/id
+     *
+     * @param array $metadata
+     * @param string $path
+     */
     private function writeArrayToVfs(array $metadata, $path)
     {
 
@@ -46,6 +79,16 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         }
     }
 
+    /**
+     * wreite block-device-mapping to Virtual File System
+     *
+     * e.g.
+     * $ curl http://169.254.169.254/latest/meta-data/block-device-mapping/
+     * ebs0
+     * root
+     *
+     * @param array $blockDeviceMapping
+     */
     private function writeBlockDeviceMappingToVfs(array $blockDeviceMapping)
     {
 
@@ -57,6 +100,19 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         $this->writeArrayToVfs($blockDeviceMapping, $blockDeviceMappingPath);
     }
 
+    /**
+     * write publick-keys to Virtual File System
+     *
+     * e.g.
+     * $ curl http://169.254.169.254/latest/meta-data/public-keys/
+     * 0=my-public-key
+     * $ curl http://169.254.169.254/latest/meta-data/public-keys/0
+     * openssh-key
+     * $ curl http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key
+     * ssh-rsa hoge my-public-key
+     *
+     * @param array $publicKeys
+     */
     private function writePublicKeysToVfs(array $publicKeys)
     {
 
@@ -77,6 +133,21 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         $this->vfsRoot->addChild($publicKeysFile);
     }
 
+    /**
+     * wriete network/interfaces/macs to Virtual File System
+     *
+     * e.g.
+     * $ curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/11:22:33:44:55:66/
+     * device-number
+     * local-hostname
+     * local-ipv4s
+     * mac
+     * owner-id
+     * public-hostname
+     * public-ipv4s
+     *
+     * @param array $network
+     */
     private function writeNetworkToVfs(array $network)
     {
 
