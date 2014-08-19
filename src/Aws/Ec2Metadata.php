@@ -2,6 +2,11 @@
 
 namespace Aws;
 
+/**
+ * This class uses file_get_contents to query the EC2 instance Metadata from within a running EC2 instance.
+ *
+ * see:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
+ */
 class Ec2Metadata
 {
 
