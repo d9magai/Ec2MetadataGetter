@@ -1,14 +1,14 @@
 <?php
 
-namespace Aws\Mock;
+namespace D9magai\Mock;
 
 /**
- * This class queries the EC2 instance Metadata from Virtual File System.
+ * VirtualEc2MetadataGetter queries the EC2 instance Metadata from Virtual File System.
  * Using for PHPUnit.
  *
  * @author d9magai
  */
-class VirtualEc2Metadata extends \Aws\Ec2Metadata
+class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
 {
 
     /**

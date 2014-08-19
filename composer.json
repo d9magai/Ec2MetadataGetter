@@ -1,5 +1,5 @@
 {
-   "name":"d9magai/php-ec2-metadata",
+   "name":"d9magai/ec2-metadata-getter",
    "description":"This tool is a rewrite of the EC2 Instance Metadata API for PHP.",
    "require":{
       "php":">=5.4.0"
@@ -11,7 +11,7 @@
    },
    "autoload":{
       "psr-0":{
-         "Aws":"src/"
+         "D9magai":"src/"
       }
    }
 }

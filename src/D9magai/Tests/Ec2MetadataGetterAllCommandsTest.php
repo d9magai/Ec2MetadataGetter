@@ -1,8 +1,8 @@
 <?php
 
-namespace Aws\Tests;
+namespace D9magai\Tests;
 
-class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
+class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
 {
 
     private $dummyMetadata = [
@@ -65,7 +65,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
 
-        $this->ec2metadata = new \Aws\Mock\VirtualEc2Metadata($this->dummyMetadata);
+        $this->ec2metadata = new \D9magai\Mock\VirtualEc2MetadataGetter($this->dummyMetadata);
     }
 
     /**
