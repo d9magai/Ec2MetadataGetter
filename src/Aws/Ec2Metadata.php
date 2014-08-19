@@ -137,4 +137,5 @@ class Ec2Metadata
         }
         return $this->get($command, array_pop($args));
     }
+
 }
