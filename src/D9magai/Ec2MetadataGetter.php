@@ -125,7 +125,8 @@ class Ec2MetadataGetter
     public function getUserData()
     {
 
-        return file_get_contents($this->url . '/latest/' . $this->commands['UserData']);
+        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
+        return $response === false ? 'not available' : $response;
     }
 
     public function exists($req)
