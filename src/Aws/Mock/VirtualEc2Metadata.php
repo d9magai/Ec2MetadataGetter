@@ -89,11 +89,7 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
             $file->write(implode(PHP_EOL, array_keys($elements)));
             $this->vfsRoot->addChild($file);
 
-            foreach ($elements as $key => $val) {
-                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $macAddressPath, $key));
-                $file->write($val);
-                $this->vfsRoot->addChild($file);
-            }
+            $this->writeArrayToVfs($elements, $macAddressPath);
         }
         $macsFile->write(implode(PHP_EOL, $macsList));
         $this->vfsRoot->addChild($macsFile);
