@@ -17,15 +17,7 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
         if (array_key_exists('block-device-mapping', $metadata)) {
 
-            $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping", $this->path));
-            $file->write(implode(PHP_EOL, array_keys($metadata['block-device-mapping'])));
-            $this->vfsRoot->addChild($file);
-
-            foreach ($metadata['block-device-mapping'] as $key => $val) {
-                $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping/%s", $this->path, $key));
-                $file->write($val);
-                $this->vfsRoot->addChild($file);
-            }
+            $this->writeBlockDeviceMappingToVfs($metadata['block-device-mapping']);
             unset($metadata['block-device-mapping']);
         }
 
@@ -75,6 +67,20 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
         foreach ($metadata as $key => $val) {
             $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $this->path, $key));
+            $file->write($val);
+            $this->vfsRoot->addChild($file);
+        }
+    }
+
+    private function writeBlockDeviceMappingToVfs(array $blockDeviceMapping)
+    {
+
+        $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping", $this->path));
+        $file->write(implode(PHP_EOL, array_keys($blockDeviceMapping)));
+        $this->vfsRoot->addChild($file);
+
+        foreach ($blockDeviceMapping as $key => $val) {
+            $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping/%s", $this->path, $key));
             $file->write($val);
             $this->vfsRoot->addChild($file);
         }
