@@ -7,22 +7,24 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
     protected $protocol = 'vfs';
 
+    private $vfsRoot;
+
     public function __construct(array $metadata)
     {
 
-        $vfsRoot = \org\bovigo\vfs\vfsStream::setup($this->hostname);
-        $vfsRoot->addChild(\org\bovigo\vfs\vfsStream::newDirectory($this->path));
+        $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup($this->hostname);
+        $this->vfsRoot->addChild(\org\bovigo\vfs\vfsStream::newDirectory($this->path));
 
         if (array_key_exists('block-device-mapping', $metadata)) {
 
             $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping", $this->path));
             $file->write(implode(PHP_EOL, array_keys($metadata['block-device-mapping'])));
-            $vfsRoot->addChild($file);
+            $this->vfsRoot->addChild($file);
 
             foreach ($metadata['block-device-mapping'] as $key => $val) {
                 $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/block-device-mapping/%s", $this->path, $key));
                 $file->write($val);
-                $vfsRoot->addChild($file);
+                $this->vfsRoot->addChild($file);
             }
             unset($metadata['block-device-mapping']);
         }
@@ -36,14 +38,14 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
 
                 $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->path, $publicKey['index']));
                 $file->write($publicKey['format']);
-                $vfsRoot->addChild($file);
+                $this->vfsRoot->addChild($file);
 
                 $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->path, $publicKey['index'], $publicKey['format']));
                 $file->write($publicKey['key']);
-                $vfsRoot->addChild($file);
+                $this->vfsRoot->addChild($file);
             }
             $publicKeysPath->write(implode(PHP_EOL, $publicKeysList));
-            $vfsRoot->addChild($publicKeysPath);
+            $this->vfsRoot->addChild($publicKeysPath);
 
             unset($metadata['public-keys']);
         }
@@ -57,16 +59,16 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
                 $networkMacAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->path, $mac);
                 $file = \org\bovigo\vfs\vfsStream::newFile($networkMacAddressPath);
                 $file->write(implode(PHP_EOL, array_keys($elements)));
-                $vfsRoot->addChild($file);
+                $this->vfsRoot->addChild($file);
 
                 foreach ($elements as $key => $val) {
                     $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $networkMacAddressPath, $key));
                     $file->write($val);
-                    $vfsRoot->addChild($file);
+                    $this->vfsRoot->addChild($file);
                 }
             }
             $networkMacsPath->write(implode(PHP_EOL, $networkMacsList));
-            $vfsRoot->addChild($networkMacsPath);
+            $this->vfsRoot->addChild($networkMacsPath);
 
             unset($metadata['network/interfaces/macs']);
         }
@@ -74,7 +76,7 @@ class VirtualEc2Metadata extends \Aws\Ec2Metadata
         foreach ($metadata as $key => $val) {
             $file = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/%s", $this->path, $key));
             $file->write($val);
-            $vfsRoot->addChild($file);
+            $this->vfsRoot->addChild($file);
         }
     }
 
