@@ -56,6 +56,7 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
             'ramdisk-id' => 'ari-abcdefgh',
             'reservation-id' => 'r-1234abcd',
             'security-groups' => 'securitygroups',
+            'services/domain' => 'amazonaws.com',
             'user-data' => 'this is userdata'
     ];
 
@@ -294,6 +295,15 @@ class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->assertEquals($this->ec2metadata->getSecurityGroups(), 'securitygroups');
+    }
+
+    /**
+     * @test
+     */
+    public function getServicesTest()
+    {
+
+        $this->assertEquals($this->ec2metadata->getServices(), 'amazonaws.com');
     }
 
     /**

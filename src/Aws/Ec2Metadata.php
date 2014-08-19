@@ -36,6 +36,7 @@ class Ec2Metadata
             'RamdiskId' => 'ramdisk-id',
             'ReservationId' => 'reservation-id',
             'SecurityGroups' => 'security-groups',
+            'Services' => 'services/domain',
             'UserData' => 'user-data'
     ];
 
