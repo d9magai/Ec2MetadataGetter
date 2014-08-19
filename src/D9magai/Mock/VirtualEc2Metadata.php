@@ -1,6 +1,6 @@
 <?php
 
-namespace Aws\Mock;
+namespace D9magai\Mock;
 
 /**
  * This class queries the EC2 instance Metadata from Virtual File System.

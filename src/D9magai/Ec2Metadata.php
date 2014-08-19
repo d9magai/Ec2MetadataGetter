@@ -1,6 +1,6 @@
 <?php
 
-namespace Aws;
+namespace D9magai;
 
 /**
  * This class uses file_get_contents to query the EC2 instance Metadata from within a running EC2 instance.

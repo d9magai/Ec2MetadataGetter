@@ -1,6 +1,6 @@
 <?php
 
-namespace Aws\Tests;
+namespace D9magai\Tests;
 
 class Ec2MetadataTest extends \PHPUnit_Framework_TestCase
 {
