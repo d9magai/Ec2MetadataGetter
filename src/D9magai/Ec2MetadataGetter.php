@@ -93,7 +93,7 @@ class Ec2MetadataGetter
     {
 
         $output = [];
-        foreach ($this->getCommands() as $req => $apiArg) {
+        foreach (array_keys($this->getCommands()) as $req ) {
             $output[$req] = $this->{"get$req"}();
         }
 
