@@ -10,7 +10,7 @@ namespace D9magai;
 class Ec2MetadataGetter
 {
 
-    protected $protocol = 'http';
+    protected $scheme = 'http';
 
     protected $hostname = '169.254.169.254';
 
@@ -154,7 +154,7 @@ class Ec2MetadataGetter
     private function getLatestInstanceDataPath()
     {
 
-        return sprintf("%s://%s/latest", $this->protocol, $this->hostname);
+        return sprintf("%s://%s/latest", $this->scheme, $this->hostname);
     }
 
     /**
