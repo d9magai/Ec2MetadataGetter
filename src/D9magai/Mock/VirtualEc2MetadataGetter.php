@@ -12,11 +12,11 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
 {
 
     /**
-     * read from vfs protocol
+     * read from vfs scheme
      *
      * @var string
      */
-    protected $protocol = 'vfs';
+    protected $scheme = 'vfs';
 
     /**
      * vfsRoot is $this->hostname

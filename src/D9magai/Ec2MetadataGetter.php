@@ -10,10 +10,25 @@ namespace D9magai;
 class Ec2MetadataGetter
 {
 
-    protected $protocol = 'http';
+    /**
+     * read from http scheme
+     *
+     * @var string
+     */
+    protected $scheme = 'http';
 
+    /**
+     * to view instance metadata from within a running instance, use this
+     *
+     * @var string
+     */
     protected $hostname = '169.254.169.254';
 
+    /**
+     * lookup table of command and meta-data destination
+     *
+     * @var array
+     */
     private $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
@@ -154,7 +169,7 @@ class Ec2MetadataGetter
     private function getLatestInstanceDataPath()
     {
 
-        return sprintf("%s://%s/latest", $this->protocol, $this->hostname);
+        return sprintf("%s://%s/latest", $this->scheme, $this->hostname);
     }
 
     /**
