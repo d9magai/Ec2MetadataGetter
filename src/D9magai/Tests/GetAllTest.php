@@ -2,16 +2,8 @@
 
 namespace D9magai\Tests;
 
-class Ec2MetadataGetterGetAllTest extends \PHPUnit_Framework_TestCase
+class GetAllTest extends \PHPUnit_Framework_TestCase
 {
-
-    private $ec2metadataGetter;
-
-    public function setUp()
-    {
-
-        $this->ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata);
-    }
 
     /**
      * @test
@@ -19,7 +11,7 @@ class Ec2MetadataGetterGetAllTest extends \PHPUnit_Framework_TestCase
     public function getAllTest()
     {
 
-        $allMetadata = $this->ec2metadataGetter->getAll();
+        $allMetadata = (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata))->getAll();
 
         $this->assertEquals($allMetadata['AmiId'], 'ami-12345678');
         $this->assertEquals($allMetadata['AmiLaunchIndex'], '0');
