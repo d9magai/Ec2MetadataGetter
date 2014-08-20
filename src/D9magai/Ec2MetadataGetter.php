@@ -118,12 +118,6 @@ class Ec2MetadataGetter
         return $response === false ? 'not available' : $response;
     }
 
-    public function exists($req)
-    {
-
-        return array_key_exists($req, $this->commands);
-    }
-
     private function getFullPath($commandName, $args)
     {
 
@@ -137,7 +131,7 @@ class Ec2MetadataGetter
     {
 
         $command = preg_replace('/^get/', '', $functionName);
-        if (!$this->exists($command)) {
+        if (!array_key_exists($command, $this->commands)) {
             throw new \LogicException("Only get operations allowed.");
         }
         return $this->get($command, array_pop($args));
