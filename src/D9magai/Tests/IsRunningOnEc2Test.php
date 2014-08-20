@@ -8,7 +8,7 @@ class IsRunningOnEc2Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isRunningOnEc2ThrowingRuntimeExceptionTest()
+    public function isRunningOnEc2Test()
     {
 
         $this->assertEquals((new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata))->isRunningOnEc2(), true);
