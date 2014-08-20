@@ -14,8 +14,6 @@ class Ec2MetadataGetter
 
     protected $hostname = '169.254.169.254';
 
-    protected $path = 'latest/meta-data';
-
     private $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
