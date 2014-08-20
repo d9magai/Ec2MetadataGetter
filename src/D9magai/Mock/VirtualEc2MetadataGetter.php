@@ -54,6 +54,14 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
             unset($metadata['network/interfaces/macs']);
         }
 
+        if (array_key_exists('user-data', $metadata)) {
+
+            $file = \org\bovigo\vfs\vfsStream::newFile('latest/user-data');
+            $file->write($metadata['user-data']);
+            $this->vfsRoot->addChild($file);
+            unset($metadata['user-data']);
+        }
+
         $this->writeArrayToVfs($metadata, $this->path);
     }
 
