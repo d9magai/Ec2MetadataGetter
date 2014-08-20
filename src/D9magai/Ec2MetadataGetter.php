@@ -146,6 +146,11 @@ class Ec2MetadataGetter
         return sprintf("%s/%s/%s/%s", $this->getLatestInstanceDataPath(), self::METADATA, $this->commands[$commandName], $args);
     }
 
+    /**
+     * get latest instance data path combined scheme
+     *
+     * @return string
+     */
     private function getLatestInstanceDataPath()
     {
 
