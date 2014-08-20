@@ -124,4 +124,5 @@ class Ec2MetadataGetterGetAllTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($allMetadata['UserData'], 'this is userdata');
     }
+
 }
