@@ -17,6 +17,11 @@ class Ec2MetadataGetter
      */
     protected $scheme = 'http';
 
+    /**
+     * to view instance metadata from within a running instance, use this
+     *
+     * @var string
+     */
     protected $hostname = '169.254.169.254';
 
     private $commands = [
