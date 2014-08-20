@@ -36,7 +36,7 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
 
         $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup(empty($hostname) ? $this->hostname : $hostname);
         $file = \org\bovigo\vfs\vfsStream::newFile('latest');
-        $file->write('dynamic' . PHP_EOL . 'meta-data' . PHP_EOL .'user-data');
+        $file->write('dynamic' . PHP_EOL . 'meta-data' . PHP_EOL . 'user-data');
         $this->vfsRoot->addChild($file);
 
         if (array_key_exists('block-device-mapping', $metadata)) {
