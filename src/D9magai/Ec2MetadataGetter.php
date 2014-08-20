@@ -152,6 +152,11 @@ class Ec2MetadataGetter
         return sprintf("%s://%s/latest", $this->protocol, $this->hostname);
     }
 
+    /**
+     * get stream_context with setting timeout of http connection
+     *
+     * @return resource
+     */
     private function getStreamContext()
     {
 
