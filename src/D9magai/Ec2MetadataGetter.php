@@ -45,6 +45,13 @@ class Ec2MetadataGetter
             'UserData' => 'user-data'
     ];
 
+    /**
+     * when not available metadata, display this message.
+     *
+     * @var string
+     */
+    const NOT_AVAILABLE = 'not available';
+
     public function getBlockDeviceMapping()
     {
 
@@ -115,7 +122,7 @@ class Ec2MetadataGetter
     {
 
         $response = @file_get_contents($this->getFullPath($commandName, $args));
-        return $response === false ? 'not available' : $response;
+        return $response === false ? self::NOT_AVAILABLE : $response;
     }
 
     private function getFullPath($commandName, $args)
