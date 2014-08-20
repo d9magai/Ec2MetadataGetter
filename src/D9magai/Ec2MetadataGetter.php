@@ -92,8 +92,8 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
-        foreach (array_keys($this->getCommands()) as $req ) {
-            $result[$req] = $this->{"get$req"}();
+        foreach (array_keys($this->getCommands()) as $commandName ) {
+            $result[$commandName] = $this->{"get$commandName"}();
         }
 
         return $result;
