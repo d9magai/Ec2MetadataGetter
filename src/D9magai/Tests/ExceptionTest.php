@@ -2,7 +2,7 @@
 
 namespace D9magai\Tests;
 
-class Ec2MetadataGetterExceptionTest extends \PHPUnit_Framework_TestCase
+class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

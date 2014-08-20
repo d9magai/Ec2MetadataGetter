@@ -2,7 +2,7 @@
 
 namespace D9magai\Tests;
 
-class Ec2MetadataGetterGetAllTest extends \PHPUnit_Framework_TestCase
+class GetAllTest extends \PHPUnit_Framework_TestCase
 {
 
     private $ec2metadataGetter;
