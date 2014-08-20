@@ -78,6 +78,7 @@ class Ec2MetadataGetter
     {
 
         $macList = explode(PHP_EOL, $this->get('Network'));
+        $network = [];
         foreach ($macList as $mac) {
             $interfaces = [];
             foreach (explode(PHP_EOL, $this->get('Network', $mac)) as $key) {
@@ -104,6 +105,7 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
+        $result = [];
         foreach (array_keys($this->commands) as $commandName) {
             $result[$commandName] = $this->{"get$commandName"}();
         }
