@@ -35,7 +35,9 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
     {
 
         $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup(empty($hostname) ? $this->hostname : $hostname);
-        $this->vfsRoot->addChild(\org\bovigo\vfs\vfsStream::newDirectory($this->path));
+        $file = \org\bovigo\vfs\vfsStream::newFile('latest');
+        $file->write('dynamic' . PHP_EOL . 'meta-data' . PHP_EOL . 'user-data');
+        $this->vfsRoot->addChild($file);
 
         if (array_key_exists('block-device-mapping', $metadata)) {
 
@@ -63,7 +65,7 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
             unset($metadata['user-data']);
         }
 
-        $this->writeArrayToVfs($metadata, $this->path);
+        $this->writeArrayToVfs($metadata, $this->getMetadataPath());
     }
 
     /**
@@ -101,7 +103,7 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
     private function writeBlockDeviceMappingToVfs(array $blockDeviceMapping)
     {
 
-        $blockDeviceMappingPath = sprintf("%s/block-device-mapping", $this->path);
+        $blockDeviceMappingPath = sprintf("%s/block-device-mapping", $this->getMetadataPath());
         $file = \org\bovigo\vfs\vfsStream::newFile($blockDeviceMappingPath);
         $file->write(implode(PHP_EOL, array_keys($blockDeviceMapping)));
         $this->vfsRoot->addChild($file);
@@ -125,16 +127,16 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
     private function writePublicKeysToVfs(array $publicKeys)
     {
 
-        $publicKeysFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys", $this->path));
+        $publicKeysFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys", $this->getMetadataPath()));
         $publicKeysList = [];
         foreach ($publicKeys as $publicKey) {
             $publicKeysList[] = sprintf("%s=%s", $publicKey['index'], $publicKey['keyname']);
 
-            $indexFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->path, $publicKey['index']));
+            $indexFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s", $this->getMetadataPath(), $publicKey['index']));
             $indexFile->write($publicKey['format']);
             $this->vfsRoot->addChild($indexFile);
 
-            $formatFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->path, $publicKey['index'], $publicKey['format']));
+            $formatFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/public-keys/%s/%s", $this->getMetadataPath(), $publicKey['index'], $publicKey['format']));
             $formatFile->write($publicKey['key']);
             $this->vfsRoot->addChild($formatFile);
         }
@@ -160,11 +162,11 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
     private function writeNetworkToVfs(array $network)
     {
 
-        $macsFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/network/interfaces/macs", $this->path));
+        $macsFile = \org\bovigo\vfs\vfsStream::newFile(sprintf("%s/network/interfaces/macs", $this->getMetadataPath()));
         $macsList = [];
         foreach ($network as $mac => $elements) {
             $macsList[] = $mac;
-            $macAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->path, $mac);
+            $macAddressPath = sprintf("%s/network/interfaces/macs/%s", $this->getMetadataPath(), $mac);
             $file = \org\bovigo\vfs\vfsStream::newFile($macAddressPath);
             $file->write(implode(PHP_EOL, array_keys($elements)));
             $this->vfsRoot->addChild($file);
@@ -173,6 +175,17 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
         }
         $macsFile->write(implode(PHP_EOL, $macsList));
         $this->vfsRoot->addChild($macsFile);
+    }
+
+    /**
+     * get latest meta-data path
+     *
+     * @return string
+     */
+    private function getMetadataPath()
+    {
+
+        return sprintf("latest/%s", self::METADATA);
     }
 
 }

@@ -14,8 +14,6 @@ class Ec2MetadataGetter
 
     protected $hostname = '169.254.169.254';
 
-    protected $path = 'latest/meta-data';
-
     private $commands = [
             'AmiId' => 'ami-id',
             'AmiLaunchIndex' => 'ami-launch-index',
@@ -44,6 +42,20 @@ class Ec2MetadataGetter
             'Services' => 'services/domain',
             'UserData' => 'user-data'
     ];
+
+    /**
+     * http connections time out after 0.1 seconds
+     *
+     * @var float
+     */
+    const HTTP_TIMEOUT = 0.1;
+
+    /**
+     * be used when assembling metadata path
+     *
+     * @var string
+     */
+    const METADATA = 'meta-data';
 
     /**
      * when not available metadata, display this message.
@@ -111,7 +123,7 @@ class Ec2MetadataGetter
     public function isRunningOnEc2()
     {
 
-        if (!@get_headers($this->url)) {
+        if (!@file_get_contents($this->getLatestInstanceDataPath(), false, $this->getStreamContext(), 1, 1)) {
             throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.");
         }
 
@@ -121,11 +133,7 @@ class Ec2MetadataGetter
     public function get($commandName, $args = '')
     {
 
-        $response = @file_get_contents($this->getFullPath($commandName, $args), false, stream_context_create([
-                'http' => [
-                        'timeout' => 0.1
-                ]
-        ]));
+        $response = @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
         return $response === false ? self::NOT_AVAILABLE : $response;
     }
 
@@ -133,9 +141,35 @@ class Ec2MetadataGetter
     {
 
         if ($commandName === 'UserData') {
-            return sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']);
+            return sprintf("%s/%s", $this->getLatestInstanceDataPath(), $this->commands['UserData']);
         }
-        return sprintf("%s://%s/%s/%s/%s", $this->protocol, $this->hostname, $this->path, $this->commands[$commandName], $args);
+        return sprintf("%s/%s/%s/%s", $this->getLatestInstanceDataPath(), self::METADATA, $this->commands[$commandName], $args);
+    }
+
+    /**
+     * get latest instance data path combined scheme
+     *
+     * @return string
+     */
+    private function getLatestInstanceDataPath()
+    {
+
+        return sprintf("%s://%s/latest", $this->protocol, $this->hostname);
+    }
+
+    /**
+     * get stream_context with setting timeout of http connection
+     *
+     * @return resource
+     */
+    private function getStreamContext()
+    {
+
+        return stream_context_create([
+                'http' => [
+                        'timeout' => self::HTTP_TIMEOUT
+                ]
+        ]);
     }
 
     public function __call($functionName, $args)
