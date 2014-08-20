@@ -45,6 +45,13 @@ class Ec2MetadataGetter
             'UserData' => 'user-data'
     ];
 
+    /**
+     * when not available metadata, display this message.
+     *
+     * @var string
+     */
+    const NOT_AVAILABLE = 'not available';
+
     public function getBlockDeviceMapping()
     {
 
@@ -78,6 +85,7 @@ class Ec2MetadataGetter
     {
 
         $macList = explode(PHP_EOL, $this->get('Network'));
+        $network = [];
         foreach ($macList as $mac) {
             $interfaces = [];
             foreach (explode(PHP_EOL, $this->get('Network', $mac)) as $key) {
@@ -92,15 +100,15 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
-        $output = [];
-        foreach ($this->getCommands() as $req => $apiArg) {
-            $output[$req] = $this->{"get$req"}();
+        $result = [];
+        foreach (array_keys($this->commands) as $commandName) {
+            $result[$commandName] = $this->{"get$commandName"}();
         }
 
-        return $output;
+        return $result;
     }
 
-    public function chkConfig()
+    public function isRunningOnEc2()
     {
 
         if (!@get_headers($this->url)) {
@@ -110,48 +118,27 @@ class Ec2MetadataGetter
         return true;
     }
 
-    public function get($req, $args = '')
+    public function get($commandName, $args = '')
     {
 
-        $response = @file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $this->commands[$req], $args));
-        return $response === false ? 'not available' : $response;
+        $response = @file_get_contents($this->getFullPath($commandName, $args));
+        return $response === false ? self::NOT_AVAILABLE : $response;
     }
 
-    /**
-     * UserData is not inside '/meta-data', so we need to declare it explicitly
-     *
-     * @return string
-     */
-    public function getUserData()
+    private function getFullPath($commandName, $args)
     {
 
-        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
-        return $response === false ? 'not available' : $response;
-    }
-
-    public function exists($req)
-    {
-
-        return array_key_exists($req, $this->commands);
-    }
-
-    public function getCommands()
-    {
-
-        return $this->commands;
-    }
-
-    private function getFullPath()
-    {
-
-        return sprintf("%s://%s/%s", $this->protocol, $this->hostname, $this->path);
+        if ($commandName === 'UserData') {
+            return sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']);
+        }
+        return sprintf("%s://%s/%s/%s/%s", $this->protocol, $this->hostname, $this->path, $this->commands[$commandName], $args);
     }
 
     public function __call($functionName, $args)
     {
 
         $command = preg_replace('/^get/', '', $functionName);
-        if (!$this->exists($command)) {
+        if (!array_key_exists($command, $this->commands)) {
             throw new \LogicException("Only get operations allowed.");
         }
         return $this->get($command, array_pop($args));

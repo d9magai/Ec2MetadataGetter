@@ -5,67 +5,12 @@ namespace D9magai\Tests;
 class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
 {
 
-    private $dummyMetadata = [
-            'ami-id' => 'ami-12345678',
-            'ami-launch-index' => '0',
-            'ami-manifest-path' => '(unknown)',
-            'block-device-mapping' => [
-                    'ebs0' => 'sda',
-                    'ephemeral0' => 'sdb',
-                    'root' => '/dev/sda1'
-            ],
-            'hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
-            'instance-action' => 'none',
-            'instance-id' => 'i-87654321',
-            'instance-type' => 't1.micro',
-            'kernel-id' => 'aki-12345678',
-            'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
-            'local-ipv4' => '10.123.123.123',
-            'mac' => '11:22:33:44:55:66',
-            'metrics/vhostmd' => '<?xml version="1.0" encoding="UTF-8"?>',
-            'network/interfaces/macs' => [
-                    '11:22:33:44:55:66' => [
-                            'device-number' => '0',
-                            'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
-                            'local-ipv4s' => '10.123.123.123',
-                            'mac' => '11:22:33:44:55:66',
-                            'owner-id' => '123456789012',
-                            'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
-                            'public-ipv4s' => '12.34.56.78'
-                    ]
-            ],
-            'placement/availability-zone' => 'ap-northeast-1c',
-            'product-codes' => 'abcdefghijklmnopqrstuvwxy',
-            'profile' => 'default-paravirtual',
-            'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
-            'public-ipv4' => '12.34.56.78',
-            'public-keys' => [
-                    [
-                            'keyname' => 'my-public-key',
-                            'index' => '0',
-                            'format' => 'openssh-key',
-                            'key' => 'ssh-rsa hogefuga my-public-key'
-                    ],
-                    [
-                            'keyname' => 'hoge-key',
-                            'index' => '1',
-                            'format' => 'openssh-key',
-                            'key' => 'ssh-rsa hogefugahogefuga hoge-key'
-                    ]
-            ],
-            'ramdisk-id' => 'ari-abcdefgh',
-            'reservation-id' => 'r-1234abcd',
-            'security-groups' => 'securitygroups',
-            'services/domain' => 'amazonaws.com',
-            'user-data' => 'this is userdata'
-    ];
-
-    private $ec2metadata;
+    private $ec2metadataGetter;
 
     public function setUp()
     {
 
-        $this->ec2metadata = new \D9magai\Mock\VirtualEc2MetadataGetter($this->dummyMetadata);
+        $this->ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata);
     }
 
     /**
@@ -74,7 +19,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getAmiIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getAmiId(), 'ami-12345678');
+        $this->assertEquals($this->ec2metadataGetter->getAmiId(), 'ami-12345678');
     }
 
     /**
@@ -83,7 +28,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getAmiLaunchIndexTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getAmiLaunchIndex(), '0');
+        $this->assertEquals($this->ec2metadataGetter->getAmiLaunchIndex(), '0');
     }
 
     /**
@@ -92,7 +37,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getAmiManifestPathTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getAmiManifestPath(), '(unknown)');
+        $this->assertEquals($this->ec2metadataGetter->getAmiManifestPath(), '(unknown)');
     }
 
     /**
@@ -101,7 +46,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getAncestorAmiIdsTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getAncestorAmiIds(), 'not available');
+        $this->assertEquals($this->ec2metadataGetter->getAncestorAmiIds(), 'not available');
     }
 
     /**
@@ -110,10 +55,10 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getBlockDeviceMappingTest()
     {
 
-        $blockDviceMapping = $this->ec2metadata->getBlockDeviceMapping();
-        $this->assertEquals($blockDviceMapping['ebs0'], 'sda');
-        $this->assertEquals($blockDviceMapping['ephemeral0'], 'sdb');
-        $this->assertEquals($blockDviceMapping['root'], '/dev/sda1');
+        $blockDeviceMapping = $this->ec2metadataGetter->getBlockDeviceMapping();
+        $this->assertEquals($blockDeviceMapping['ebs0'], 'sda');
+        $this->assertEquals($blockDeviceMapping['ephemeral0'], 'sdb');
+        $this->assertEquals($blockDeviceMapping['root'], '/dev/sda1');
     }
 
     /**
@@ -122,7 +67,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getHostnameTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
+        $this->assertEquals($this->ec2metadataGetter->getHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
     }
 
     /**
@@ -131,7 +76,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getInstanceActionTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getInstanceAction(), 'none');
+        $this->assertEquals($this->ec2metadataGetter->getInstanceAction(), 'none');
     }
 
     /**
@@ -140,7 +85,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getInstanceIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getInstanceId(), 'i-87654321');
+        $this->assertEquals($this->ec2metadataGetter->getInstanceId(), 'i-87654321');
     }
 
     /**
@@ -149,7 +94,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getInstanceTypeTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getInstanceType(), 't1.micro');
+        $this->assertEquals($this->ec2metadataGetter->getInstanceType(), 't1.micro');
     }
 
     /**
@@ -158,7 +103,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getKernelIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getKernelId(), 'aki-12345678');
+        $this->assertEquals($this->ec2metadataGetter->getKernelId(), 'aki-12345678');
     }
 
     /**
@@ -167,7 +112,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getLocalHostnameTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getLocalHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
+        $this->assertEquals($this->ec2metadataGetter->getLocalHostname(), 'ip-10-123-123-123.ap-northeast-1.compute.internal');
     }
 
     /**
@@ -176,7 +121,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getLocalIpv4Test()
     {
 
-        $this->assertEquals($this->ec2metadata->getLocalIpv4(), '10.123.123.123');
+        $this->assertEquals($this->ec2metadataGetter->getLocalIpv4(), '10.123.123.123');
     }
 
     /**
@@ -185,7 +130,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getMacTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getMac(), '11:22:33:44:55:66');
+        $this->assertEquals($this->ec2metadataGetter->getMac(), '11:22:33:44:55:66');
     }
 
     /**
@@ -194,7 +139,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getMetricsTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getMetrics(), '<?xml version="1.0" encoding="UTF-8"?>');
+        $this->assertEquals($this->ec2metadataGetter->getMetrics(), '<?xml version="1.0" encoding="UTF-8"?>');
     }
 
     /**
@@ -203,7 +148,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getNetworkTest()
     {
 
-        $network = $this->ec2metadata->getNetwork();
+        $network = $this->ec2metadataGetter->getNetwork();
         $interfaces = $network['11:22:33:44:55:66'];
         $this->assertEquals($interfaces['device-number'], '0');
         $this->assertEquals($interfaces['local-hostname'], 'ip-10-123-123-123.ap-northeast-1.compute.internal');
@@ -220,7 +165,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getPlacementTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getPlacement(), 'ap-northeast-1c');
+        $this->assertEquals($this->ec2metadataGetter->getPlacement(), 'ap-northeast-1c');
     }
 
     /**
@@ -229,7 +174,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getProductCodesTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getProductCodes(), 'abcdefghijklmnopqrstuvwxy');
+        $this->assertEquals($this->ec2metadataGetter->getProductCodes(), 'abcdefghijklmnopqrstuvwxy');
     }
 
     /**
@@ -238,7 +183,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getProfileTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getProfile(), 'default-paravirtual');
+        $this->assertEquals($this->ec2metadataGetter->getProfile(), 'default-paravirtual');
     }
 
     /**
@@ -247,7 +192,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getPublicIpv4Test()
     {
 
-        $this->assertEquals($this->ec2metadata->getPublicIpv4(), '12.34.56.78');
+        $this->assertEquals($this->ec2metadataGetter->getPublicIpv4(), '12.34.56.78');
     }
 
     /**
@@ -256,7 +201,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getPublicKeysTest()
     {
 
-        $publicKeys = $this->ec2metadata->getPublicKeys();
+        $publicKeys = $this->ec2metadataGetter->getPublicKeys();
         $publicKey = $publicKeys[0];
         $this->assertEquals($publicKey['keyname'], 'my-public-key');
         $this->assertEquals($publicKey['index'], '0');
@@ -276,7 +221,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getRamdiskIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getRamdiskId(), 'ari-abcdefgh');
+        $this->assertEquals($this->ec2metadataGetter->getRamdiskId(), 'ari-abcdefgh');
     }
 
     /**
@@ -285,7 +230,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getReservationIdTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getReservationId(), 'r-1234abcd');
+        $this->assertEquals($this->ec2metadataGetter->getReservationId(), 'r-1234abcd');
     }
 
     /**
@@ -294,7 +239,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getSecurityGroupsTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getSecurityGroups(), 'securitygroups');
+        $this->assertEquals($this->ec2metadataGetter->getSecurityGroups(), 'securitygroups');
     }
 
     /**
@@ -303,7 +248,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getServicesTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getServices(), 'amazonaws.com');
+        $this->assertEquals($this->ec2metadataGetter->getServices(), 'amazonaws.com');
     }
 
     /**
@@ -312,7 +257,7 @@ class Ec2MetadataGetterAllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getUserDataTest()
     {
 
-        $this->assertEquals($this->ec2metadata->getUserData(), 'this is userdata');
+        $this->assertEquals($this->ec2metadataGetter->getUserData(), 'this is userdata');
     }
 
 }
