@@ -14,8 +14,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function isRunningOnEc2ThrowingRuntimeExceptionTest()
     {
 
-        $ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata, 'not_found');
-        $ec2metadataGetter->isRunningOnEc2();
+        (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata, 'not_found'))->isRunningOnEc2();
     }
 
     /**
@@ -26,8 +25,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function magicMethodThrowingLogicExceptionTest()
     {
 
-        $ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata);
-        $ec2metadataGetter->getHogeFuga();
+        (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata))->getHogeFuga();
     }
 
 }
