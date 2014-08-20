@@ -79,6 +79,15 @@ class Ec2MetadataGetter
      */
     const NOT_AVAILABLE = 'not available';
 
+    /**
+     * e.g.
+     * $blockDeviceMapping = [
+     *          'ebs0' => 'sda',
+     *          'ephemeral0' => 'sdb',
+     *          'root' => '/dev/sda1'
+     *  ];
+     * @return array
+     */
     public function getBlockDeviceMapping()
     {
 
