@@ -100,7 +100,7 @@ class Ec2MetadataGetter
         return $output;
     }
 
-    public function chkConfig()
+    public function isRunningOnEc2()
     {
 
         if (!@get_headers($this->url)) {

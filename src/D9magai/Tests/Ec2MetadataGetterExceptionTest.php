@@ -11,11 +11,11 @@ class Ec2MetadataGetterExceptionTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage [ERROR] Command not valid outside EC2 instance.
      * Please run this command within a running EC2 instance.
      */
-    public function chkConfigThrowingRuntimeExceptionTest()
+    public function isRunningOnEc2ThrowingRuntimeExceptionTest()
     {
 
         $ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata, 'not_found');
-        $ec2metadataGetter->chkConfig();
+        $ec2metadataGetter->isRunningOnEc2();
     }
 
     /**
