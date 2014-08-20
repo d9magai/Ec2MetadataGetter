@@ -98,6 +98,18 @@ class Ec2MetadataGetter
         return $output;
     }
 
+    /**
+     * e.g.
+     * $publicKeys = [
+     *         0 => [
+     *                 'keyname' => 'my-public-key',
+     *                 'index' => '0',
+     *                 'format' => 'openssh-key',
+     *                 'key' => 'ssh-rsa hogefuga my-public-key'
+     *         ]
+     * ];
+     * @return array
+     */
     public function getPublicKeys()
     {
 
