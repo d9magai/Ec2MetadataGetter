@@ -46,6 +46,13 @@ class Ec2MetadataGetter
     ];
 
     /**
+     * be used when assembling metadata path
+     *
+     * @var string
+     */
+    const METADATA = 'meta-data';
+
+    /**
      * when not available metadata, display this message.
      *
      * @var string
@@ -133,9 +140,14 @@ class Ec2MetadataGetter
     {
 
         if ($commandName === 'UserData') {
-            return sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']);
+            return sprintf("%s/%s", $this->getLatestInstanceDataPath(), $this->commands['UserData']);
         }
-        return sprintf("%s://%s/%s/%s/%s", $this->protocol, $this->hostname, $this->path, $this->commands[$commandName], $args);
+        return sprintf("%s/%s/%s/%s",  $this->getLatestInstanceDataPath(), self::METADATA, $this->commands[$commandName], $args);
+    }
+
+    private function getLatestInstanceDataPath()
+    {
+        return sprintf("%s://%s/latest", $this->protocol, $this->hostname);
     }
 
     public function __call($functionName, $args)
