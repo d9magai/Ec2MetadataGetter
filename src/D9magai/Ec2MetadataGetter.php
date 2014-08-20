@@ -10,6 +10,11 @@ namespace D9magai;
 class Ec2MetadataGetter
 {
 
+    /**
+     * read from http scheme
+     *
+     * @var string
+     */
     protected $scheme = 'http';
 
     protected $hostname = '169.254.169.254';
