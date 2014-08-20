@@ -90,18 +90,6 @@ class Ec2MetadataGetter
         return $network;
     }
 
-    /**
-     * UserData is not inside '/meta-data', so we need to declare it explicitly
-     *
-     * @return string
-     */
-    public function getUserData()
-    {
-
-        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
-        return $response === false ? 'not available' : $response;
-    }
-
     public function getAll()
     {
 
@@ -123,10 +111,10 @@ class Ec2MetadataGetter
         return true;
     }
 
-    public function get($req, $args = '')
+    public function get($commandName, $args = '')
     {
 
-        $response = @file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $this->commands[$req], $args));
+        $response = @file_get_contents($this->getFullPath($commandName, $args));
         return $response === false ? 'not available' : $response;
     }
 
@@ -136,10 +124,13 @@ class Ec2MetadataGetter
         return array_key_exists($req, $this->commands);
     }
 
-    private function getFullPath()
+    private function getFullPath($commandName, $args)
     {
 
-        return sprintf("%s://%s/%s", $this->protocol, $this->hostname, $this->path);
+        if ($commandName === 'UserData') {
+            return sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']);
+        }
+        return sprintf("%s://%s/%s/%s/%s", $this->protocol, $this->hostname, $this->path, $this->commands[$commandName], $args);
     }
 
     public function __call($functionName, $args)
