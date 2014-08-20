@@ -92,7 +92,7 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
-        foreach (array_keys($this->getCommands()) as $commandName ) {
+        foreach (array_keys($this->commands) as $commandName) {
             $result[$commandName] = $this->{"get$commandName"}();
         }
 
@@ -132,12 +132,6 @@ class Ec2MetadataGetter
     {
 
         return array_key_exists($req, $this->commands);
-    }
-
-    public function getCommands()
-    {
-
-        return $this->commands;
     }
 
     private function getFullPath()
