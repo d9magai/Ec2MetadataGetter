@@ -29,11 +29,12 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
      * write metadata to Virtual File System
      *
      * @param array $metadata
+     * @param string $hostname
      */
-    public function __construct(array $metadata)
+    public function __construct(array $metadata, $hostname = '')
     {
 
-        $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup($this->hostname);
+        $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup(empty($hostname) ? $this->hostname : $hostname);
         $this->vfsRoot->addChild(\org\bovigo\vfs\vfsStream::newDirectory($this->path));
 
         if (array_key_exists('block-device-mapping', $metadata)) {
