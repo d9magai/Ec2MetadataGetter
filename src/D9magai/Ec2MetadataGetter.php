@@ -89,6 +89,18 @@ class Ec2MetadataGetter
         return $network;
     }
 
+    /**
+     * UserData is not inside '/meta-data', so we need to declare it explicitly
+     *
+     * @return string
+     */
+    public function getUserData()
+    {
+
+        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
+        return $response === false ? 'not available' : $response;
+    }
+
     public function getAll()
     {
 
@@ -113,18 +125,6 @@ class Ec2MetadataGetter
     {
 
         $response = @file_get_contents(sprintf("%s/%s/%s", $this->getFullPath(), $this->commands[$req], $args));
-        return $response === false ? 'not available' : $response;
-    }
-
-    /**
-     * UserData is not inside '/meta-data', so we need to declare it explicitly
-     *
-     * @return string
-     */
-    public function getUserData()
-    {
-
-        $response = @file_get_contents(sprintf("%s://%s/latest/%s", $this->protocol, $this->hostname, $this->commands['UserData']));
         return $response === false ? 'not available' : $response;
     }
 
