@@ -92,12 +92,11 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
-        $output = [];
         foreach (array_keys($this->getCommands()) as $req ) {
-            $output[$req] = $this->{"get$req"}();
+            $result[$req] = $this->{"get$req"}();
         }
 
-        return $output;
+        return $result;
     }
 
     public function isRunningOnEc2()
