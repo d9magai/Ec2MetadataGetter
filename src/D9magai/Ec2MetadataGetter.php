@@ -184,6 +184,7 @@ class Ec2MetadataGetter
     public function get($commandName, $args = '')
     {
 
+        $this->isRunningOnEc2();
         return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
     }
 
