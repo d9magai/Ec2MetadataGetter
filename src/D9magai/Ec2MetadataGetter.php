@@ -192,13 +192,30 @@ class Ec2MetadataGetter
         return true;
     }
 
+    /**
+     * read URL by combined commandName and args into an array.
+     * return the read data or false on failure.
+     * throw RuntimeException if it is not on the EC2.
+     *
+     * @param string $commandName
+     * @param string $args
+     * @throws \RuntimeException
+     * @return array|false
+     */
     public function get($commandName, $args = '')
     {
 
-        $response = @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
-        return $response === false ? self::NOT_AVAILABLE : $response;
+        $this->isRunningOnEc2();
+        return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
     }
 
+    /**
+     * get full path by latest instance data path, commandName and args.
+     *
+     * @param string $commandName
+     * @param string $args
+     * @return string
+     */
     private function getFullPath($commandName, $args)
     {
 
@@ -234,6 +251,16 @@ class Ec2MetadataGetter
         ]);
     }
 
+    /**
+     * I try to remove "get" at the beginning of a functionName in the first.
+     * calling get function if there is a command in $this->commands.
+     * otherwise throw LogicException.
+     *
+     * @param string $functionName
+     * @param string $args
+     * @throws \LogicException
+     * @return array|false
+     */
     public function __call($functionName, $args)
     {
 
