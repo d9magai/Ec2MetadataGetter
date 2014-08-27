@@ -209,6 +209,13 @@ class Ec2MetadataGetter
         return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
     }
 
+    /**
+     * get full path by latest instance data path, commandName and args.
+     *
+     * @param string $commandName
+     * @param string $args
+     * @return string
+     */
     private function getFullPath($commandName, $args)
     {
 
