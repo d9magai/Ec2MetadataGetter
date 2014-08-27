@@ -176,6 +176,12 @@ class Ec2MetadataGetter
         return $result;
     }
 
+    /**
+     * returns true if on EC2, otherwise throw RuntimeException
+     *
+     * @throws \RuntimeException
+     * @return true
+     */
     public function isRunningOnEc2()
     {
 
