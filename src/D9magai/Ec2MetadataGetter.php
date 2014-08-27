@@ -79,6 +79,15 @@ class Ec2MetadataGetter
      */
     const NOT_AVAILABLE = 'not available';
 
+    /**
+     * e.g.
+     * $blockDeviceMapping = [
+     *          'ebs0' => 'sda',
+     *          'ephemeral0' => 'sdb',
+     *          'root' => '/dev/sda1'
+     *  ];
+     * @return array
+     */
     public function getBlockDeviceMapping()
     {
 
@@ -89,6 +98,18 @@ class Ec2MetadataGetter
         return $output;
     }
 
+    /**
+     * e.g.
+     * $publicKeys = [
+     *         0 => [
+     *                 'keyname' => 'my-public-key',
+     *                 'index' => '0',
+     *                 'format' => 'openssh-key',
+     *                 'key' => 'ssh-rsa hogefuga my-public-key'
+     *         ]
+     * ];
+     * @return array
+     */
     public function getPublicKeys()
     {
 
@@ -108,6 +129,21 @@ class Ec2MetadataGetter
         return $keys;
     }
 
+    /**
+     * e.g.
+     * $network = [
+     *         '11:22:33:44:55:66' => [
+     *                 'device-number' => '0',
+     *                  'local-hostname' => 'ip-10-123-123-123.ap-northeast-1.compute.internal',
+     *                  'local-ipv4s' => '10.123.123.123',
+     *                  'mac' => '11:22:33:44:55:66',
+     *                  'owner-id' => '123456789012',
+     *                  'public-hostname' => 'ec2-12-34-56-78.ap-northeast-1.compute.amazonaws.com',
+     *                  'public-ipv4s' => '12.34.56.78'
+     *          ]
+     *  ];
+     * @return array
+     */
     public function getNetwork()
     {
 
