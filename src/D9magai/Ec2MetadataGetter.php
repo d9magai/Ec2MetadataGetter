@@ -252,7 +252,7 @@ class Ec2MetadataGetter
     }
 
     /**
-     * I try to remove "get" at the beginning of a functionName in the first.
+     * try to remove "get" at the beginning of a functionName in the first.
      * calling get function if there is a command in $this->commands.
      * otherwise throw LogicException.
      *
