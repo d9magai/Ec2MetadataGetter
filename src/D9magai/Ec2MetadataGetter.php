@@ -251,6 +251,16 @@ class Ec2MetadataGetter
         ]);
     }
 
+    /**
+     * I try to remove "get" at the beginning of a functionName in the first.
+     * calling get function if there is a command in $this->commands.
+     * otherwise throw LogicException.
+     *
+     * @param string $functionName
+     * @param string $args
+     * @throws \LogicException
+     * @return array|false
+     */
     public function __call($functionName, $args)
     {
 
