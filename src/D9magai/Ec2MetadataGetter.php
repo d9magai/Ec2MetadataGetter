@@ -184,8 +184,7 @@ class Ec2MetadataGetter
     public function get($commandName, $args = '')
     {
 
-        $response = @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
-        return $response === false ? self::NOT_AVAILABLE : $response;
+        return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
     }
 
     private function getFullPath($commandName, $args)
