@@ -16,7 +16,7 @@ class GetAllTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($allMetadata['AmiId'], 'ami-12345678');
         $this->assertEquals($allMetadata['AmiLaunchIndex'], '0');
         $this->assertEquals($allMetadata['AmiManifestPath'], '(unknown)');
-        $this->assertEquals($allMetadata['AncestorAmiIds'], 'not available');
+        $this->assertEquals($allMetadata['AncestorAmiIds'], false);
 
         $this->assertEquals($allMetadata['BlockDeviceMapping']['ebs0'], 'sda');
         $this->assertEquals($allMetadata['BlockDeviceMapping']['ephemeral0'], 'sdb');

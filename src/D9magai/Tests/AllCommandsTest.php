@@ -46,7 +46,7 @@ class AllCommandsTest extends \PHPUnit_Framework_TestCase
     public function getAncestorAmiIdsTest()
     {
 
-        $this->assertEquals($this->ec2metadataGetter->getAncestorAmiIds(), 'not available');
+        $this->assertEquals($this->ec2metadataGetter->getAncestorAmiIds(), false);
     }
 
     /**
