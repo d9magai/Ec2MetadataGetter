@@ -192,6 +192,16 @@ class Ec2MetadataGetter
         return true;
     }
 
+    /**
+     * read URL by combined commandName and args into an array.
+     * return the read data or false on failure.
+     * throw RuntimeException if it is not on the EC2.
+     *
+     * @param string $commandName
+     * @param string $args
+     * @throws \RuntimeException
+     * @return array|false
+     */
     public function get($commandName, $args = '')
     {
 
