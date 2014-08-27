@@ -160,6 +160,11 @@ class Ec2MetadataGetter
         return $network;
     }
 
+    /**
+     * get all instance data using lookup table
+     *
+     * @return array
+     */
     public function getAll()
     {
 
