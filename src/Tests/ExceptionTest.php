@@ -1,6 +1,6 @@
 <?php
 
-namespace D9magai\Tests;
+namespace Razorpay\EC2Metadata\Tests;
 
 class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function isRunningOnEc2ThrowingRuntimeExceptionTest()
     {
 
-        (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata, 'not_found'))->isRunningOnEc2();
+        (new \Razorpay\EC2Metadata\Mock\VirtualEc2MetadataGetter(\Razorpay\EC2Metadata\Mock\DummyMetadata::$dummyMetadata, 'not_found'))->isRunningOnEc2();
     }
 
     /**
@@ -25,7 +25,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function magicMethodThrowingLogicExceptionTest()
     {
 
-        (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata))->getHogeFuga();
+        (new \Razorpay\EC2Metadata\Mock\VirtualEc2MetadataGetter(\Razorpay\EC2Metadata\Mock\DummyMetadata::$dummyMetadata))->getHogeFuga();
     }
 
 }

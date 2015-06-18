@@ -8,6 +8,6 @@ Usage:
 in composer.json
 ```json
 "require": {
-	"d9magai/ec2-metadata-getter": "dev-master"
+	"Razorpay/ec2-metadata": "dev-master"
 }
 ```

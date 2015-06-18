@@ -1,6 +1,6 @@
 <?php
 
-namespace D9magai\Tests;
+namespace Razorpay\EC2Metadata\Tests;
 
 class GetAllTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +11,7 @@ class GetAllTest extends \PHPUnit_Framework_TestCase
     public function getAllTest()
     {
 
-        $allMetadata = (new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata))->getAll();
+        $allMetadata = (new \Razorpay\EC2Metadata\Mock\VirtualEc2MetadataGetter(\Razorpay\EC2Metadata\Mock\DummyMetadata::$dummyMetadata))->getAll();
 
         $this->assertEquals($allMetadata['AmiId'], 'ami-12345678');
         $this->assertEquals($allMetadata['AmiLaunchIndex'], '0');

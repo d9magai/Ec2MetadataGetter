@@ -1,6 +1,6 @@
 <?php
 
-namespace D9magai\Tests;
+namespace Razorpay\EC2Metadata\Tests;
 
 class AllCommandsTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class AllCommandsTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
 
-        $this->ec2metadataGetter = new \D9magai\Mock\VirtualEc2MetadataGetter(\D9magai\Mock\DummyMetadata::$dummyMetadata);
+        $this->ec2metadataGetter = new \Razorpay\EC2Metadata\Mock\VirtualEc2MetadataGetter(\Razorpay\EC2Metadata\Mock\DummyMetadata::$dummyMetadata);
     }
 
     /**

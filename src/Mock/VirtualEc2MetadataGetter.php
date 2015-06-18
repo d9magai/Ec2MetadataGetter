@@ -1,14 +1,14 @@
 <?php
 
-namespace D9magai\Mock;
+namespace Razorpay\EC2Metadata\Mock;
 
 /**
  * VirtualEc2MetadataGetter queries the EC2 instance Metadata from Virtual File System.
  * Using for PHPUnit.
  *
- * @author d9magai
+ * @author Razorpay\EC2Metadata
  */
-class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
+class VirtualEc2MetadataGetter extends \Razorpay\EC2Metadata\Ec2MetadataGetter
 {
 
     /**
@@ -33,7 +33,7 @@ class VirtualEc2MetadataGetter extends \D9magai\Ec2MetadataGetter
      */
     public function __construct(array $metadata, $hostname = '')
     {
-
+        parent::__construct();
         $this->vfsRoot = \org\bovigo\vfs\vfsStream::setup(empty($hostname) ? $this->hostname : $hostname);
         $file = \org\bovigo\vfs\vfsStream::newFile('latest');
         $file->write('dynamic' . PHP_EOL . 'meta-data' . PHP_EOL . 'user-data');

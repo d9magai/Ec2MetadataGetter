@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
+<phpunit backupGlobals="false"
+  backupStaticAttributes="false"
+  bootstrap="vendor/autoload.php"
   colors="true"
-  bootstrap="classloader.php">
-    <filter>
-        <blacklist>
-            <directory>vendor</directory>
-            <directory>src/D9magai/Mock</directory>
-            <file>classloader.php</file>
-        </blacklist>
-    </filter>
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  processIsolation="false"
+  stopOnFailure="false"
+  syntaxCheck="false"
+>
+  <testsuite>
+    <directory>src/Tests/</directory>
+  </testsuite>
+  <filter>
+    <whitelist>
+      <directory suffix=".php">src/</directory>
+      <exclude>
+        <directory>vendor/</directory>
+      </exclude>
+    </whitelist>
+  </filter>
 </phpunit>
 
