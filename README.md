@@ -1,4 +1,4 @@
-ec2-metadata
+ec2-metadata [![Build Status](https://travis-ci.org/razorpay/ec2-metadata.svg?branch=master)](https://travis-ci.org/razorpay/ec2-metadata)
 ================
 
 This tool is a rewrite of the [EC2 Instance Metadata API](http://aws.amazon.com/code/1825) for PHP.
