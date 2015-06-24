@@ -1,6 +1,7 @@
 {
    "name":"razorpay/ec2-metadata",
    "description":"This tool is a rewrite of the EC2 Instance Metadata API for PHP.",
+   "version": "1.0.0",
    "require":{
       "php":">=5.4.0"
    },

@@ -13,8 +13,7 @@ The differences from the fork are:
 
 ## TODO
 
-- Need to write tests for new functionality
-- Publish package to packagist
+- Add support for dummy data for local usage
 
 ### Usage:
 
