@@ -86,7 +86,7 @@ class Ec2MetadataGetter
         // Make sure that it is writeable
         if(!is_writeable($this->cache_dir))
         {
-            throw new Exception("Cache directory not readable", 1);
+            throw new \Exception("Cache directory not writable");
         }
     }
 
