@@ -1,5 +1,4 @@
 <?php
-
 namespace Razorpay\EC2Metadata;
 
 /**
@@ -79,6 +78,12 @@ class Ec2MetadataGetter
      */
     const NOT_AVAILABLE = 'not available';
 
+    /**
+     * Whether to return dummy data or not
+     * @var boolean
+     */
+    private $dummy = false;
+
     public function __construct($cache_dir = "/tmp")
     {
         $this->cache_dir = $cache_dir;
@@ -88,6 +93,14 @@ class Ec2MetadataGetter
         {
             throw new \Exception("Cache directory not writable");
         }
+    }
+
+    /**
+     * Allows dummy data to be returned instead of raising an exception
+     */
+    public function allowDummy()
+    {
+        $this->dummy = true;
     }
 
     /**
@@ -258,9 +271,16 @@ class Ec2MetadataGetter
      */
     public function isRunningOnEc2()
     {
+        /**
+         * We may fake being on EC2
+         */
+        if($this->dummy)
+        {
+            return true;
+        }
 
         if (!@file_get_contents($this->getLatestInstanceDataPath(), false, $this->getStreamContext(), 1, 1)) {
-            throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.");
+            throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance or call allowDummy()");
         }
 
         return true;
@@ -280,7 +300,16 @@ class Ec2MetadataGetter
     {
 
         $this->isRunningOnEc2();
-        return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
+        if($this->dummy)
+        {
+            $command = $this->commands[$commandName];
+            $dummy = new Mock\VirtualEc2MetadataGetter(Mock\DummyMetadata::$dummyMetadata);
+            return $dummy->get($commandName, $args);
+        }
+        else
+        {
+            return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
+        }
     }
 
     /**
@@ -301,7 +330,7 @@ class Ec2MetadataGetter
         $response = [];
         foreach($attributes as $attribute)
         {
-            $response[$attribute] = $this->get($attribute);
+            $response[$attribute] = $this->{"get$attribute"}();
         }
 
         return $response;
