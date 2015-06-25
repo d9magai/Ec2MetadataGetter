@@ -2,13 +2,13 @@
    "name":"razorpay/ec2-metadata",
    "description":"This tool is a rewrite of the EC2 Instance Metadata API for PHP.",
    "require":{
-      "php":">=5.4.0"
+      "php":">=5.4.0",
+      "mikey179/vfsStream": "1.3.*"
    },
-   "version": "2.1.0",
+   "version": "2.1.1",
    "license":"MIT",
    "require-dev":{
       "phpunit/phpunit":"3.7.*",
-      "mikey179/vfsStream": "1.3.*",
       "codacy/coverage": "dev-master"
    },
    "autoload":{
