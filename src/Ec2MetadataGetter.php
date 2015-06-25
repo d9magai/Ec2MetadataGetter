@@ -143,7 +143,7 @@ class Ec2MetadataGetter
     private function getCacheFile(array $attributes)
     {
         $uniqueRequestId = $this->uniqueRequestId($attributes);
-        $filename = realpath($this->cache_dir . DIRECTORY_SEPARATOR . $uniqueRequestId . ".json");
+        $filename = $this->cache_dir . DIRECTORY_SEPARATOR . $uniqueRequestId . ".json";
         return $filename;
     }
 
@@ -156,7 +156,8 @@ class Ec2MetadataGetter
     {
         // make array unique (order independent)
         // then serialize and hash it to generate a unique id
-        return sha1(serialize(sort($attributes, SORT_STRING)));
+        sort($attributes, SORT_STRING);
+        return sha1(serialize($attributes));
     }
 
     /**
@@ -260,6 +261,8 @@ class Ec2MetadataGetter
             $result[$commandName] = $this->{"get$commandName"}();
         }
 
+        $this->writeCache($this->commands, $result);
+
         return $result;
     }
 
@@ -320,7 +323,7 @@ class Ec2MetadataGetter
      */
 
     public function getMultiple(array $attributes){
-        $cacheData = $this->readCache(array_keys($this->commands));
+        $cacheData = $this->readCache(array_keys($attributes));
 
         if($cacheData)
         {
@@ -332,6 +335,8 @@ class Ec2MetadataGetter
         {
             $response[$attribute] = $this->{"get$attribute"}();
         }
+
+        $this->writeCache($attributes, $response);
 
         return $response;
     }

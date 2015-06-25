@@ -19,4 +19,16 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     {
         new Ec2MetadataGetter("/sys");
     }
+
+    public function testCacheWritten()
+    {
+        $ec2 = new Ec2MetadataGetter("/tmp");
+        $ec2->allowDummy();
+        $response = $ec2->getMultiple(['AmiId']);
+
+        $this->assertEquals('ami-12345678', $response['AmiId']);
+
+        $cacheContent = file_get_contents('/tmp/fd2f4b29d4b9a6c68c2669d66aacd03dffa6164b.json');
+        $this->assertEquals('{"AmiId":"ami-12345678"}', $cacheContent);
+    }
 }
