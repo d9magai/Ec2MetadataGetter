@@ -10,7 +10,7 @@ The differences from the fork are:
 - An additional method called `getMultiple` which fetches multiple instance attributes specified in an array
 - Caching support. The same request repeated twice on the same machine will give a cached response.
 - Custom caching directory. The constructor now takes a cache storage directory and uses that.
-- Support for returning dummy data so as to run this on dev environments
+- Support for returning dummy data so as to run this on dev environments (only works if composer has installed dev dependencies)
 
 ### Usage:
 
@@ -24,7 +24,7 @@ In composer.json
 
 In your code:
 
-```
+```php
 <?php
 use Razorpay\EC2Metadata\Ec2MetadataGetter;
 
@@ -39,6 +39,8 @@ $client->allowDummy();
 $client->getAmiId(); // Will always return "ami-12345678"
 
 // Another extra feature from the upstream is the inclusion of a getMultiple method:
+// This only works on dev environments
+// Dummy is always given priority
 
 $client->getMultiple(['Network', ['AmiId']]);
 
