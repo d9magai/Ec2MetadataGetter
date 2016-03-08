@@ -1,6 +1,6 @@
 <?php
 
-namespace D9magai\Mock;
+namespace Razorpay\EC2Metadata\Mock;
 
 class DummyMetadata
 {

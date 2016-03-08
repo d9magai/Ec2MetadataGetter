@@ -1,11 +1,10 @@
 <?php
-
-namespace D9magai;
+namespace Razorpay\EC2Metadata;
 
 /**
  * Ec2MetadataGetter uses file_get_contents to query the EC2 instance Metadata from within a running EC2 instance.
  *
- * see:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
+ * see: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
  */
 class Ec2MetadataGetter
 {
@@ -78,6 +77,88 @@ class Ec2MetadataGetter
      * @var string
      */
     const NOT_AVAILABLE = 'not available';
+
+    /**
+     * Whether to return dummy data or not
+     * @var boolean
+     */
+    private $dummy = false;
+
+    public function __construct($cache_dir = "/tmp")
+    {
+        $this->cache_dir = $cache_dir;
+
+        // Make sure that it is writeable
+        if(!is_writeable($this->cache_dir))
+        {
+            throw new \Exception("Cache directory not writable");
+        }
+    }
+
+    /**
+     * Allows dummy data to be returned instead of raising an exception
+     */
+    public function allowDummy()
+    {
+        $this->dummy = true;
+    }
+
+    /**
+     * Writes the response to the cache file
+     * @param  array $attributes array of requested attributes
+     * @param  array $response   combined response of the API
+     * @return string $filename filename to which the response was cached to
+     */
+    private function writeCache($attributes, $response)
+    {
+        $filename = $this->getCacheFile($attributes);
+        $data = json_encode($response);
+        file_put_contents($filename, $data);
+
+        return $filename;
+    }
+
+    /**
+     * read the data from the cache and return it
+     * @param  array  $attributes array of requested attributes
+     * @return array|false return an array of response, or false if file was not found
+     */
+    private function readCache(array $attributes)
+    {
+        $filename = $this->getCacheFile($attributes);
+        if(is_readable($filename))
+        {
+            return json_decode($filename);
+        }
+
+        return false;
+
+    }
+
+    /**
+     * returns the filename for the cache file
+     * @param  array  $attributes array of requested attributes
+     * @return string $filename fully qualified path of the file
+     */
+    private function getCacheFile(array $attributes)
+    {
+        $uniqueRequestId = $this->uniqueRequestId($attributes);
+        $filename = $this->cache_dir . DIRECTORY_SEPARATOR . $uniqueRequestId . ".json";
+        return $filename;
+    }
+
+    /**
+     * Returns a unique hash for a set of attributes
+     * @param  array  $attributes list of attributes asked for
+     * @return string unique hash to use as filename
+     */
+    private function uniqueRequestId(array $attributes)
+    {
+        // make array unique (order independent)
+        // then serialize and hash it to generate a unique id
+        sort($attributes, SORT_STRING);
+        return sha1(serialize($attributes));
+    }
 
     /**
      * e.g.
@@ -168,10 +249,19 @@ class Ec2MetadataGetter
     public function getAll()
     {
 
+        $cacheData = $this->readCache(array_keys($this->commands));
+
+        if($cacheData)
+        {
+            return $cacheData;
+        }
+
         $result = [];
         foreach (array_keys($this->commands) as $commandName) {
             $result[$commandName] = $this->{"get$commandName"}();
         }
+
+        $this->writeCache($this->commands, $result);
 
         return $result;
     }
@@ -184,9 +274,16 @@ class Ec2MetadataGetter
      */
     public function isRunningOnEc2()
     {
+        /**
+         * We may fake being on EC2
+         */
+        if($this->dummy)
+        {
+            return true;
+        }
 
         if (!@file_get_contents($this->getLatestInstanceDataPath(), false, $this->getStreamContext(), 1, 1)) {
-            throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.");
+            throw new \RuntimeException("[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance or call allowDummy()");
         }
 
         return true;
@@ -206,7 +303,42 @@ class Ec2MetadataGetter
     {
 
         $this->isRunningOnEc2();
-        return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
+        if($this->dummy)
+        {
+            $command = $this->commands[$commandName];
+            $dummy = new Mock\VirtualEc2MetadataGetter(Mock\DummyMetadata::$dummyMetadata);
+            return $dummy->get($commandName, $args);
+        }
+        else
+        {
+            return @file_get_contents($this->getFullPath($commandName, $args), false, $this->getStreamContext());
+        }
+    }
+
+    /**
+     * read multiple commands and return an array
+     * internally calls get
+     * @param array $attributes array of attributes to read
+     * @return array response
+     */
+
+    public function getMultiple(array $attributes){
+        $cacheData = $this->readCache(array_keys($attributes));
+
+        if($cacheData)
+        {
+            return $cacheData;
+        }
+
+        $response = [];
+        foreach($attributes as $attribute)
+        {
+            $response[$attribute] = $this->{"get$attribute"}();
+        }
+
+        $this->writeCache($attributes, $response);
+
+        return $response;
     }
 
     /**

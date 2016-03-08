@@ -1,0 +1,15 @@
+language: php
+php:
+- 5.4
+- 5.5
+- 5.6
+- 7.0
+- hhvm
+install:
+- composer install
+script: php vendor/bin/phpunit --coverage-clover clover.xml
+after_script:
+- php vendor/bin/codacycoverage clover clover.xml
+notifications:
+  slack:
+    secure: fs9f6dDKQLLcIXxqnWjZgj/zmX8hp9QnjfeDcVXZ/hFJE6tqCYR2rTZJvFT6Ti8qlXNPK4qvNlKP1vScMAtCzGayLH2YbHKoz184UVfDeHKeXwn1jxzq6OS9IADMn2LspLNHzueYJm79IcYK828njdvamXlhDvKWfpF3WWi41pImZ+Q2YnmN09q6WakgTDtbNl3EtSRl4GaC3PoR+sb8NPK7/6wRo/wy716nBjCsXzTBq17aWlZUBF+XjtzzEsQ+JIHKL1ICSySzWASWdcISIbT/+m3lq2YM5eoLfsOlPxckLx7ZLQkiAgIkg4xxpIhnTP3JJnhIB05ddBkRXCVH/Vb1OLBvGdBH4Qh8XWAr9/KLsvbCSLqBAk1SBFHEsO8ALyv1YXK9oPzQNSbRzFpdswBHoAmmqqdD9k8v2po7KdFrVDqQbRlNYaw+WM0zb3VbA9WfVh3VOH4QF/ebCuvN+rDrPjBM0ejtuTukUs+uuyXMufgGc36CnsNi8mWRL3ruZ/MQqLs9aI7PMow4/m7h6WxYXnd2NEl5Df8SXTsu8bU1DhIRkbxq6eehCHgKBV9mdV9RhvB63lemrPoubAU2H53ekjV+n5f00qAkHgCwCupZyyA1s/Ru9ldzknQPqM/gvaRHnNhej97vHLOEXvXTIgfePzTVKcKc5wS2MZENueQ=
